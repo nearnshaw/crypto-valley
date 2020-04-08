@@ -1,5 +1,7 @@
 ///// Connect to the REST API
 
+import { userData } from './contractHandler'
+
 export const apiUrl = 'http://127.0.0.1:7753'
 
 export const sceneName = 'valley'
@@ -24,7 +26,7 @@ canvas.addComponent(
   new Transform({
     position: new Vector3(56, 13, 62),
     rotation: Quaternion.Euler(0, 180, 180),
-    scale: new Vector3(10 * 3.2, 5.6 * 3.2, 0.01)
+    scale: new Vector3(10 * 3.2, 5.6 * 3.2, 0.01),
   })
 )
 engine.addEntity(canvas)
@@ -36,7 +38,7 @@ canvas2.addComponent(
   new Transform({
     position: new Vector3(56, 1.95, 52),
     rotation: Quaternion.Euler(-28, 0, 180),
-    scale: new Vector3(10 * 0.21, 5.6 * 0.21, 0.01)
+    scale: new Vector3(10 * 0.21, 5.6 * 0.21, 0.01),
   })
 )
 engine.addEntity(canvas2)
@@ -71,7 +73,7 @@ export function switchSlide(scene: string, slide: number) {
     try {
       let response = await fetch(url, {
         headers: headers,
-        method: method
+        method: method,
       }).then()
 
       let json = await response.json()
@@ -83,12 +85,32 @@ export function switchSlide(scene: string, slide: number) {
   })
 }
 
+export function signGuestBook() {
+  let url = `${apiUrl}/api/dclslides/sign?scene=${sceneName}&id=${userData.displayName}&wallet=${userData.publicKey}`
+  let method = 'POST'
+  let headers = { 'Content-Type': 'application/json' }
+  executeTask(async () => {
+    try {
+      let response = await fetch(url, {
+        headers: headers,
+        method: method,
+      }).then()
+
+      let json = await response.json()
+      //log(json)
+      await getFromServer(true)
+    } catch {
+      log('error signing guestbook')
+    }
+  })
+}
+
 export function getFromServer(force?: boolean) {
-  let url = `${apiUrl}/api/dclslides/currentslide?scene=${sceneName}`
+  let slideurl = `${apiUrl}/api/dclslides/currentslide?scene=${sceneName}`
 
   executeTask(async () => {
     try {
-      let response = await fetch(url)
+      let response = await fetch(slideurl)
       let json = await response.json()
       //log(json)
 
@@ -97,6 +119,12 @@ export function getFromServer(force?: boolean) {
         currentSlide = json.slideNumber
         updateCanvasMaterial(json.slide)
       }
+
+      // get guestbook
+
+      // get donations
+
+      // get banners
     } catch {
       log('error getting slide data')
     }

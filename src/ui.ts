@@ -1,9 +1,11 @@
 import {
   getStock,
   makeSimpleDonation,
-  makeMaskDonation
+  makeMaskDonation,
 } from './contractHandler'
-import { shopAnim } from './game'
+//import { shopAnim } from './game'
+import { signGuestBook } from './serverHandler'
+import { Dispenser } from './dispenser'
 
 export const screenSpaceUI = new UICanvas()
 screenSpaceUI.visible = true
@@ -12,11 +14,11 @@ let UIOpenTime
 
 const imageTexture = new Texture('images/shop-UI.png')
 
-type mask = { type: string; stand: Entity; hasStock: boolean }
+type mask = { type: string; stand: Dispenser; hasStock: boolean }
 
 let currentMask: mask = { type: 'none', stand: null, hasStock: true }
 
-export async function openUI(selectedMask: string, stand: Entity) {
+export async function openUI(selectedMask: string, stand: Dispenser) {
   UIOpenTime = +Date.now()
   background.visible = true
   background.isPointerBlocker = true
@@ -28,7 +30,7 @@ export async function openUI(selectedMask: string, stand: Entity) {
   currentMask = {
     type: selectedMask,
     stand: stand,
-    hasStock: await getStock(selectedMask)
+    hasStock: await getStock(selectedMask),
   }
 
   if (!currentMask.hasStock) {
@@ -92,7 +94,7 @@ donationInput.placeholder = '0.08'
 // stop.sourceHeight = 128
 donationInput.isPointerBlocker = true
 donationInput.visible = true
-donationInput.onTextSubmit = new OnTextSubmit(x => {
+donationInput.onTextSubmit = new OnTextSubmit((x) => {
   //FloatingTextShape.value = x.text
   let newText = x.text.substr(0, 50)
   donationInput.placeholder = newText
@@ -160,14 +162,17 @@ AcceptButton.sourceHeight = 64
 AcceptButton.visible = false
 AcceptButton.isPointerBlocker = false
 AcceptButton.onClick = new OnClick(() => {
+  /////  do I add MANY 0s to the eth number????
+  signGuestBook()
+  closeUI()
   let donatedMoney = +currentPayment.value
   log('making donation of ', donatedMoney.toString())
-  //   if (currentMask.hasStock && donatedMoney > 0.08) {
-  //     makeMaskDonation(currentMask.type, donatedMoney)
-  //     shopAnim(currentMask.stand)
-  //   } else {
-  makeSimpleDonation(donatedMoney)
-  //}
+  if (currentMask.hasStock && donatedMoney >= 0.08) {
+    makeMaskDonation(currentMask.type, donatedMoney)
+    currentMask.stand.buy()
+  } else {
+    makeSimpleDonation(donatedMoney)
+  }
 })
 
 export const CancelButton = new UIImage(screenSpaceUI, imageTexture)
@@ -196,7 +201,7 @@ CancelButton.onClick = new OnClick(() => {
 const input = Input.instance
 
 //button down event
-input.subscribe('BUTTON_DOWN', ActionButton.POINTER, false, e => {
+input.subscribe('BUTTON_DOWN', ActionButton.POINTER, false, (e) => {
   const currentTime = +Date.now()
   let isOpen: boolean
   if (background.visible) {

@@ -1,14 +1,21 @@
 import * as eth from '../node_modules/eth-connect/esm'
 import { getProvider } from '@decentraland/web3-provider'
-import { getUserData } from '@decentraland/Identity'
+import { getUserData, UserData } from '@decentraland/Identity'
 import donationContract from './abis/donationsAbi'
 //import collectionsContract from './abis/collectionAbi'
 let minDonation = 0.08
 
-const userData = executeTask(async () => {
-  const data = await getUserData()
-  log('USER PUBLIC KEY: ', data.publicKey)
-})
+// TODO:  get user address!!!!!!!!!!
+
+export let userData: UserData
+
+export function getUser() {
+  executeTask(async () => {
+    userData = await getUserData()
+    //log('USER ETH ADDRESS: ', userData.publicKey)
+  })
+}
+getUser()
 
 export async function getStock(maskId: string) {
   const provider = await getProvider()
@@ -20,8 +27,11 @@ export async function getStock(maskId: string) {
   )
   const donationsContract = (await donationsTokenFactory.at(
     '0x5aae4ae8471b89f342df9fd45d51d96c31bc6d6b'
+
+    /// mainnet: 0xc2ff6d64085d444812fd6ceeb3e53d96c9f53c93
   )) as any
   return await donationsContract.canMint(maskId)
+  // mainnet: canMint('mask_1', 10)     (number of masks)
 }
 
 export async function makeMaskDonation(maskId: string, amount: number) {
@@ -34,11 +44,12 @@ export async function makeMaskDonation(maskId: string, amount: number) {
   )
   const donationsContract = (await donationsTokenFactory.at(
     '0x5aae4ae8471b89f342df9fd45d51d96c31bc6d6b'
+    /// mainnet: 0xc2ff6d64085d444812fd6ceeb3e53d96c9f53c93
   )) as any
 
-  return donationsContract.donateForNFT(maskId).send({
-    from: '0x87956abC4078a0Cc3b89b419928b857B8AF826Ed', //userData.
-    value: amount
+  return donationsContract.donateForNFT(maskId, {
+    from: '0xe2b6024873d218B2E83B462D3658D8D7C3f55a18',
+    value: eth.toWei(amount, 'ether'), //amount * 1000000000000000000,
   })
 }
 
@@ -52,10 +63,11 @@ export async function makeSimpleDonation(amount: number) {
   )
   const donationsContract = (await donationsTokenFactory.at(
     '0x5aae4ae8471b89f342df9fd45d51d96c31bc6d6b'
+    /// mainnet: 0xc2ff6d64085d444812fd6ceeb3e53d96c9f53c93
   )) as any
 
-  return donationsContract.donate().send({
-    from: '0x87956abC4078a0Cc3b89b419928b857B8AF826Ed', // userData.
-    value: amount
+  return donationsContract.donate({
+    from: '0xe2b6024873d218B2E83B462D3658D8D7C3f55a18',
+    value: eth.toWei(amount, 'ether'), //amount * 1000000000000000000,
   })
 }

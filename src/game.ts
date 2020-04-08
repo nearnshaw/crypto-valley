@@ -4,6 +4,7 @@ import { currentSlide, sceneName, switchSlide } from './serverHandler'
 import { openUI } from './ui'
 import utils from '../node_modules/decentraland-ecs-utils/index'
 import decentralandEcsUtils from '../node_modules/decentraland-ecs-utils/index'
+import { Dispenser } from './dispenser'
 
 let building = new Entity()
 building.addComponent(new GLTFShape('models/DCL_CC.glb'))
@@ -11,7 +12,7 @@ building.addComponent(
   new Transform({
     position: new Vector3(56, 0, 16 + 8),
     rotation: Quaternion.Euler(0, 180, 0),
-    scale: new Vector3(1, 1, 1)
+    scale: new Vector3(1, 1, 1),
   })
 )
 engine.addEntity(building)
@@ -22,7 +23,7 @@ turtle.addComponent(
   new Transform({
     position: new Vector3(56, 1.25, 55.8),
     rotation: Quaternion.Euler(0, 180, 0),
-    scale: new Vector3(1.7, 1.7, 1.7)
+    scale: new Vector3(1.7, 1.7, 1.7),
   })
 )
 engine.addEntity(turtle)
@@ -33,7 +34,7 @@ lights1.addComponent(
   new Transform({
     position: new Vector3(56, 0, 16 + 8),
     rotation: Quaternion.Euler(0, 180, 0),
-    scale: new Vector3(1, 1, 1)
+    scale: new Vector3(1, 1, 1),
   })
 )
 engine.addEntity(lights1)
@@ -44,7 +45,7 @@ lights2.addComponent(
   new Transform({
     position: new Vector3(56, 0, 16 + 8),
     rotation: Quaternion.Euler(0, 180, 0),
-    scale: new Vector3(1, 1, 1)
+    scale: new Vector3(1, 1, 1),
   })
 )
 engine.addEntity(lights2)
@@ -55,7 +56,7 @@ elevator.addComponent(
   new Transform({
     position: new Vector3(56, 0, 16 + 8),
     rotation: Quaternion.Euler(0, 180, 0),
-    scale: new Vector3(1, 1, 1)
+    scale: new Vector3(1, 1, 1),
   })
 )
 engine.addEntity(elevator)
@@ -65,7 +66,7 @@ banner.addComponent(new GLTFShape('models/banner.glb'))
 banner.addComponent(
   new Transform({
     position: new Vector3(56, 0, 16 + 8),
-    rotation: Quaternion.Euler(0, 180, 0)
+    rotation: Quaternion.Euler(0, 180, 0),
   })
 )
 engine.addEntity(banner)
@@ -100,7 +101,7 @@ animatorN.addClip(clipButtonN)
 buttonNext.addComponent(animatorN)
 buttonNext.addComponent(
   new Transform({
-    position: new Vector3(55, 1.25, 53)
+    position: new Vector3(55, 1.25, 53),
   })
 )
 
@@ -115,7 +116,7 @@ buttonNext.addComponent(
     {
       button: ActionButton.POINTER,
       hoverText: 'Next',
-      distance: 10
+      distance: 10,
     }
   )
 )
@@ -132,7 +133,7 @@ animatorL.addClip(clipButtonL)
 buttonLast.addComponent(animatorL)
 buttonLast.addComponent(
   new Transform({
-    position: new Vector3(57, 1.25, 53)
+    position: new Vector3(57, 1.25, 53),
   })
 )
 
@@ -150,7 +151,7 @@ buttonLast.addComponent(
     {
       button: ActionButton.POINTER,
       hoverText: 'Last',
-      distance: 10
+      distance: 10,
     }
   )
 )
@@ -159,52 +160,60 @@ engine.addEntity(buttonLast)
 
 /// wearables dispenser
 
-let wearableStand1 = new Entity()
-wearableStand1.addComponent(
-  new Transform({
-    position: new Vector3(4, 0, 55)
-  })
+// let wearableStand1 = new Entity()
+// wearableStand1.addComponent(
+//   new Transform({
+//     position: new Vector3(4, 0, 55),
+//   })
+// )
+
+// wearableStand1.addComponent(new GLTFShape('models/machine.glb'))
+// let idleAnim = new AnimationState('idle', { looping: true })
+// let buyAnim = new AnimationState('buy', { looping: false })
+// let newMaskAnim = new AnimationState('new_mask', { looping: false })
+// let stand1Anim = new Animator()
+// stand1Anim.addClip(idleAnim)
+// stand1Anim.addClip(newMaskAnim)
+// stand1Anim.addClip(buyAnim)
+// wearableStand1.addComponent(stand1Anim)
+// idleAnim.play()
+// wearableStand1.addComponent(
+//   new OnPointerDown((e) => {
+//     openUI('protection_mask_abstract_mask', wearableStand1)
+//   })
+// )
+// engine.addEntity(wearableStand1)
+
+const machine1 = new Dispenser(
+  new GLTFShape('models/machine.glb'),
+  {
+    position: new Vector3(4, 0, 55),
+  },
+  'mask_10' //'protection_mask_abstract_mask'
 )
 
-wearableStand1.addComponent(new GLTFShape('models/machine.glb'))
-let idleAnim = new AnimationState('idle', { looping: true })
-let buyAnim = new AnimationState('buy', { looping: false })
-let newMaskAnim = new AnimationState('new_mask', { looping: false })
-let stand1Anim = new Animator()
-stand1Anim.addClip(idleAnim)
-stand1Anim.addClip(newMaskAnim)
-stand1Anim.addClip(buyAnim)
-wearableStand1.addComponent(stand1Anim)
-idleAnim.play()
-wearableStand1.addComponent(
-  new OnPointerDown(e => {
-    openUI('mask_10', wearableStand1)
-  })
+const machine2 = new Dispenser(
+  new GLTFShape('models/african-machine.glb'),
+  {
+    position: new Vector3(2, 0, 55),
+  },
+  'mask_9' //'protection_mask_african_mask'
 )
-engine.addEntity(wearableStand1)
 
-let stand1Particles = new Entity()
-stand1Particles.addComponent(
-  new Transform({
-    position: new Vector3(4, 0, 55)
-  })
-)
-stand1Particles.addComponent(new GLTFShape('models/particles.glb'))
-engine.addEntity(stand1Particles)
+// protection_mask_abstract_mask
+// protection_mask_african_mask
+// protection_mask_funny_mask
+// protection_mask_graffiti_mask
+// protection_mask_hot_mask
+// protection_mask_monster_mask
+// protection_mask_skull_mask
+// protection_mask_tiger_mask
 
-export function shopAnim(stand: Entity) {
-  let anim = stand.getComponent(Animator)
+//// MUSIC
 
-  anim.getClip('idle').stop()
-  anim.getClip('buy').stop()
-  anim.getClip('new_mask').stop()
-
-  anim.getClip('buy').play()
-
-  stand.addComponentOrReplace(
-    new utils.Delay(4000, () => {
-      anim.getClip('buy').stop()
-      anim.getClip('new_mask').play()
-    })
-  )
-}
+// const streamSource = new Entity()
+// streamSource.addComponent(new Transform({ position: new Vector3(56, 10, 55) }))
+// streamSource.addComponent(
+//   new AudioStream('https://icecast.ravepartyradio.org/ravepartyradio-192.mp3')
+// )
+// engine.addEntity(streamSource)
