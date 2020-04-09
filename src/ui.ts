@@ -4,8 +4,10 @@ import {
   makeMaskDonation,
 } from './contractHandler'
 //import { shopAnim } from './game'
-import { signGuestBook } from './serverHandler'
+import { signGuestBook, canvas } from './serverHandler'
 import { Dispenser } from './dispenser'
+import utils from '../node_modules/decentraland-ecs-utils/index'
+import { sceneMessageBus } from './game'
 
 export const screenSpaceUI = new UICanvas()
 screenSpaceUI.visible = true
@@ -16,7 +18,7 @@ const imageTexture = new Texture('images/shop-UI.png')
 
 type mask = { type: string; stand: Dispenser; hasStock: boolean }
 
-let currentMask: mask = { type: 'none', stand: null, hasStock: true }
+export let currentMask: mask = { type: 'none', stand: null, hasStock: true }
 
 export async function openUI(selectedMask: string, stand: Dispenser) {
   UIOpenTime = +Date.now()
@@ -45,35 +47,56 @@ export function closeUI() {
   CancelButton.visible = false
   AcceptButton.isPointerBlocker = false
   CancelButton.isPointerBlocker = false
+
+  warningOneMask.visible = false
+  warningNoStock.visible = false
+  warningNoNFT.visible = false
+  currentMasks.visible = false
   // hide warnings
 }
 
 export const background = new UIImage(screenSpaceUI, imageTexture)
 background.name = 'background'
 background.width = 1024
-background.height = 648
+background.height = 667.5
 background.hAlign = 'center'
 background.vAlign = 'center'
+background.positionY = 35
 background.sourceLeft = 0
-background.sourceTop = 65
+background.sourceTop = 0
 background.sourceWidth = 1024
-background.sourceHeight = 648
+background.sourceHeight = 667.5
 background.visible = false
 background.isPointerBlocker = false
 
 export const currentPayment = new UIText(background)
 currentPayment.value = '0.08'
 currentPayment.name = 'currentPayment'
-currentPayment.width = '650px'
+currentPayment.width = '200px'
 currentPayment.height = '100px'
 currentPayment.hAlign = 'center'
 currentPayment.vAlign = 'top'
-currentPayment.positionY = -80
-currentPayment.positionX = -80
-currentPayment.fontSize = 30
+currentPayment.positionY = -140
+currentPayment.positionX = -40
+currentPayment.fontSize = 32
 currentPayment.vTextAlign = 'center'
 currentPayment.hTextAlign = 'center'
 currentPayment.color = Color4.FromHexString('#53508F88')
+
+export const currentMasks = new UIText(background)
+currentMasks.value = '1'
+currentMasks.name = 'currentMasks'
+currentMasks.width = '100px'
+currentMasks.height = '100px'
+currentMasks.hAlign = 'center'
+currentMasks.vAlign = 'top'
+currentMasks.positionY = -195
+currentMasks.positionX = -230
+currentMasks.fontSize = 28
+currentMasks.vTextAlign = 'center'
+currentMasks.hTextAlign = 'center'
+currentMasks.color = Color4.FromHexString('#53508F88')
+currentMasks.visible = false
 
 export const donationInput = new UIInputText(background)
 donationInput.name = 'message'
@@ -81,13 +104,15 @@ donationInput.width = '150px'
 donationInput.height = '50px'
 donationInput.hAlign = 'center'
 donationInput.vAlign = 'bottom'
-donationInput.positionY = 65
-donationInput.positionX = -150
+donationInput.positionY = 110
+donationInput.positionX = -200
 donationInput.fontSize = 40
 donationInput.vTextAlign = 'center'
 donationInput.hTextAlign = 'center'
-donationInput.color = Color4.FromHexString('#53508F88')
-donationInput.placeholder = '0.08'
+
+donationInput.placeholder = '0.058'
+// donationInput.background = Color4.FromHexString('#F2F2F2FF')
+// donationInput.color = Color4.Black()
 // stop.sourceLeft = 0
 // stop.sourceTop = 384
 // stop.sourceWidth = 1024
@@ -95,81 +120,112 @@ donationInput.placeholder = '0.08'
 donationInput.isPointerBlocker = true
 donationInput.visible = true
 donationInput.onTextSubmit = new OnTextSubmit((x) => {
-  //FloatingTextShape.value = x.text
-  let newText = x.text.substr(0, 50)
-  donationInput.placeholder = newText
-  currentPayment.value = newText
+  //let newText = x.text.substr(0, 50)
+  respondToNumber(x.text)
+
   //sceneMessageBus.emit('newText', { text: newText })
 })
 
+export function respondToNumber(newText: string) {
+  donationInput.placeholder = newText
+  currentPayment.value = newText
+
+  let newNumber: number = parseFloat(newText)
+  log('new text: ', newNumber)
+  if (currentMask.hasStock) {
+    if (newNumber < 0.058) {
+      warningNoNFT.visible = true
+      warningNoStock.visible = false
+      warningOneMask.visible = false
+      currentMasks.visible = false
+    } else {
+      warningOneMask.visible = true
+      currentMasks.visible = true
+      warningNoNFT.visible = false
+      warningNoStock.visible = false
+
+      let masks = Math.floor(newNumber / 0.058)
+      if (masks > 10) {
+        masks = 10
+      }
+      if (newNumber == 0.58) {
+        masks = 10
+      }
+      currentMasks.value = masks.toString()
+    }
+  }
+}
+
 export const warningOneMask = new UIImage(screenSpaceUI, imageTexture)
 warningOneMask.name = 'warningOneMask'
-warningOneMask.width = 1024
-warningOneMask.height = 62
+warningOneMask.width = 805
+warningOneMask.height = 40
 warningOneMask.hAlign = 'center'
 warningOneMask.vAlign = 'center'
 warningOneMask.positionY = 120
-warningOneMask.positionX = 50
-warningOneMask.sourceLeft = 0
-warningOneMask.sourceTop = 648 + 65
-warningOneMask.sourceWidth = 1024
-warningOneMask.sourceHeight = 62
+warningOneMask.positionX = -50
+warningOneMask.sourceLeft = 50
+warningOneMask.sourceTop = 805
+warningOneMask.sourceWidth = 800
+warningOneMask.sourceHeight = 40
 warningOneMask.visible = false
 warningOneMask.isPointerBlocker = false
 
 export const warningNoNFT = new UIImage(screenSpaceUI, imageTexture)
 warningNoNFT.name = 'warningNoNFT'
-warningNoNFT.width = 1024
-warningNoNFT.height = 64
+warningNoNFT.width = 950
+warningNoNFT.height = 40
 warningNoNFT.hAlign = 'center'
 warningNoNFT.vAlign = 'center'
 warningNoNFT.positionY = 120
 warningNoNFT.positionX = 50
-warningNoNFT.sourceLeft = 0
-warningNoNFT.sourceTop = 648 + 65 + 65
-warningNoNFT.sourceWidth = 1024
-warningNoNFT.sourceHeight = 62
+warningNoNFT.sourceLeft = 50
+warningNoNFT.sourceTop = 878
+warningNoNFT.sourceWidth = 950
+warningNoNFT.sourceHeight = 40
 warningNoNFT.visible = false
 warningNoNFT.isPointerBlocker = false
 
 export const warningNoStock = new UIImage(screenSpaceUI, imageTexture)
 warningNoStock.name = 'warningNoStock'
-warningNoStock.width = 1024 * 0.9
-warningNoStock.height = 62 * 0.9
+warningNoStock.width = 950
+warningNoStock.height = 40
 warningNoStock.hAlign = 'center'
 warningNoStock.vAlign = 'center'
 warningNoStock.positionY = 115
-warningNoStock.positionX = 0
-warningNoStock.sourceLeft = 0
-warningNoStock.sourceTop = 648 + 65 + 65 + 65
-warningNoStock.sourceWidth = 1024
-warningNoStock.sourceHeight = 62
+warningNoStock.positionX = 25
+warningNoStock.sourceLeft = 50
+warningNoStock.sourceTop = 951
+warningNoStock.sourceWidth = 950
+warningNoStock.sourceHeight = 40
 warningNoStock.visible = false
 warningNoStock.isPointerBlocker = false
 
 export const AcceptButton = new UIImage(screenSpaceUI, imageTexture)
 AcceptButton.name = 'AcceptButton'
-AcceptButton.width = 1024 / 2
-AcceptButton.height = 64
+AcceptButton.width = 460
+AcceptButton.height = 80
 AcceptButton.hAlign = 'left'
-AcceptButton.vAlign = 'center'
-AcceptButton.positionY = 60
-AcceptButton.positionX = 222
-AcceptButton.sourceLeft = 1
-AcceptButton.sourceTop = 0
-AcceptButton.sourceWidth = 1024 / 2
-AcceptButton.sourceHeight = 64
+AcceptButton.vAlign = 'bottom'
+AcceptButton.positionY = 70
+AcceptButton.positionX = 260
+AcceptButton.sourceLeft = 42 + 460 + 20
+AcceptButton.sourceTop = 1010
+AcceptButton.sourceWidth = 460
+AcceptButton.sourceHeight = 80
 AcceptButton.visible = false
 AcceptButton.isPointerBlocker = false
 AcceptButton.onClick = new OnClick(() => {
   /////  do I add MANY 0s to the eth number????
   signGuestBook()
   closeUI()
-  let donatedMoney = +currentPayment.value
+  let donatedMoney = parseFloat(currentPayment.value)
   log('making donation of ', donatedMoney.toString())
-  if (currentMask.hasStock && donatedMoney >= 0.08) {
+  if (currentMask.hasStock && donatedMoney >= 0.058) {
     makeMaskDonation(currentMask.type, donatedMoney)
     currentMask.stand.buy()
+    sceneMessageBus.emit('boughtMask', { id: currentMask.stand.id })
+    showNFTsComing()
   } else {
     makeSimpleDonation(donatedMoney)
   }
@@ -177,23 +233,44 @@ AcceptButton.onClick = new OnClick(() => {
 
 export const CancelButton = new UIImage(screenSpaceUI, imageTexture)
 CancelButton.name = 'AcceptButton'
-CancelButton.width = 1024 / 2
-CancelButton.height = 64
+CancelButton.width = 460
+CancelButton.height = 80
 CancelButton.hAlign = 'right'
-CancelButton.vAlign = 'center'
-CancelButton.positionY = 60
-CancelButton.positionX = -222
-CancelButton.sourceLeft = 1024 / 2 + 1
-CancelButton.sourceTop = 0
-CancelButton.sourceWidth = 1024 / 2
-CancelButton.sourceHeight = 64
+CancelButton.vAlign = 'bottom'
+CancelButton.positionY = 70
+CancelButton.positionX = -260
+CancelButton.sourceLeft = 42
+CancelButton.sourceTop = 1010
+CancelButton.sourceWidth = 460
+CancelButton.sourceHeight = 80
 CancelButton.visible = false
 CancelButton.isPointerBlocker = false
 CancelButton.onClick = new OnClick(() => {
   closeUI()
 })
 
-// cancel button
+export const NFTComing = new UIText(screenSpaceUI)
+NFTComing.value = 'Your NFT/s are being minted, they will be here soon!'
+NFTComing.width = '200px'
+NFTComing.height = '50px'
+NFTComing.hAlign = 'center'
+NFTComing.vAlign = 'center'
+NFTComing.fontSize = 32
+NFTComing.vTextAlign = 'center'
+NFTComing.hTextAlign = 'center'
+NFTComing.color = Color4.White()
+NFTComing.visible = false
+
+export function showNFTsComing(duration: number = 10000) {
+  NFTComing.visible = true
+  let dummyEnt1 = new Entity()
+  dummyEnt1.addComponentOrReplace(
+    new utils.Delay(8000, () => {
+      NFTComing.visible = false
+    })
+  )
+  engine.addEntity(dummyEnt1)
+}
 
 /////// CLOSE UI
 
@@ -211,8 +288,7 @@ input.subscribe('BUTTON_DOWN', ActionButton.POINTER, false, (e) => {
   }
 
   if (isOpen && currentTime - UIOpenTime > 100) {
-    background.visible = false
-    background.isPointerBlocker = false
+    closeUI()
     log('clicked on the close image ', background.visible)
   }
 })

@@ -26,11 +26,11 @@ export async function getStock(maskId: string) {
     donationContract
   )
   const donationsContract = (await donationsTokenFactory.at(
-    '0x5aae4ae8471b89f342df9fd45d51d96c31bc6d6b'
+    //ropsten: '0x5aae4ae8471b89f342df9fd45d51d96c31bc6d6b'
 
-    /// mainnet: 0xc2ff6d64085d444812fd6ceeb3e53d96c9f53c93
+    '0x56505A0313bA2B4bC0bE23Dbb7EB71b7885FCA9e'
   )) as any
-  return await donationsContract.canMint(maskId)
+  return await donationsContract.canMint(maskId, 10)
   // mainnet: canMint('mask_1', 10)     (number of masks)
 }
 
@@ -43,12 +43,12 @@ export async function makeMaskDonation(maskId: string, amount: number) {
     donationContract
   )
   const donationsContract = (await donationsTokenFactory.at(
-    '0x5aae4ae8471b89f342df9fd45d51d96c31bc6d6b'
-    /// mainnet: 0xc2ff6d64085d444812fd6ceeb3e53d96c9f53c93
+    //ropsten: '0x5aae4ae8471b89f342df9fd45d51d96c31bc6d6b'
+    '0x56505A0313bA2B4bC0bE23Dbb7EB71b7885FCA9e'
   )) as any
 
   return donationsContract.donateForNFT(maskId, {
-    from: '0xe2b6024873d218B2E83B462D3658D8D7C3f55a18',
+    from: userData.publicKey, //'0xe2b6024873d218B2E83B462D3658D8D7C3f55a18',
     value: eth.toWei(amount, 'ether'), //amount * 1000000000000000000,
   })
 }
@@ -62,12 +62,12 @@ export async function makeSimpleDonation(amount: number) {
     donationContract
   )
   const donationsContract = (await donationsTokenFactory.at(
-    '0x5aae4ae8471b89f342df9fd45d51d96c31bc6d6b'
-    /// mainnet: 0xc2ff6d64085d444812fd6ceeb3e53d96c9f53c93
+    //ropsten: '0x5aae4ae8471b89f342df9fd45d51d96c31bc6d6b'
+    '0x56505A0313bA2B4bC0bE23Dbb7EB71b7885FCA9e'
   )) as any
 
   return donationsContract.donate({
-    from: '0xe2b6024873d218B2E83B462D3658D8D7C3f55a18',
+    from: userData.publicKey, //'0xe2b6024873d218B2E83B462D3658D8D7C3f55a18',
     value: eth.toWei(amount, 'ether'), //amount * 1000000000000000000,
   })
 }

@@ -59,7 +59,7 @@ export class CheckServer implements ISystem {
   }
 }
 
-engine.addSystem(new CheckServer(refreshInterval))
+//engine.addSystem(new CheckServer(refreshInterval))
 
 getFromServer(true)
 

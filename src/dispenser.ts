@@ -1,15 +1,18 @@
 import { openUI } from './ui'
 import utils from '../node_modules/decentraland-ecs-utils/index'
+import { sceneMessageBus } from './game'
 
 export class Dispenser extends Entity {
   idleAnim = new AnimationState('idle', { looping: true })
   buyAnim = new AnimationState('buy', { looping: false })
   newMaskAnim = new AnimationState('new_mask', { looping: false })
   buttonAnim = new AnimationState('Action', { looping: false })
+  id: string
   constructor(
     model: GLTFShape,
     transform: TranformConstructorArgs,
-    wearableName: string
+    wearableName: string,
+    id: string
     //,sound: AudioClip
   ) {
     super()
@@ -24,8 +27,10 @@ export class Dispenser extends Entity {
     this.getComponent(Animator).addClip(this.newMaskAnim)
     this.idleAnim.play()
 
+    this.id = id
+
     let heartButton = new Entity()
-    heartButton.addComponent(new GLTFShape('models/heart.glb'))
+    heartButton.addComponent(new GLTFShape('models/heart-button.glb'))
     heartButton.addComponent(new Animator())
     heartButton.getComponent(Animator).addClip(this.buttonAnim)
     heartButton.setParent(this)
