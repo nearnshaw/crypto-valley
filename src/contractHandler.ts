@@ -17,7 +17,7 @@ export function getUser() {
 }
 getUser()
 
-export async function getStock(maskId: string) {
+export async function getStock(maskId: string, amount: number) {
   const provider = await getProvider()
   const rm = new eth.RequestManager(provider)
 
@@ -30,8 +30,11 @@ export async function getStock(maskId: string) {
 
     '0x56505A0313bA2B4bC0bE23Dbb7EB71b7885FCA9e'
   )) as any
-  return await donationsContract.canMint(maskId, 10)
-  // mainnet: canMint('mask_1', 10)     (number of masks)
+
+  log('balance of: ', await donationsContract.balanceOf(maskId))
+  let responseCanMint = await donationsContract.canMint(maskId, amount)
+  log('can mint: ', responseCanMint)
+  return donationsContract.canMint(maskId, amount)
 }
 
 export async function makeMaskDonation(maskId: string, amount: number) {

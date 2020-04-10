@@ -3,15 +3,14 @@ import { refreshInterval } from './serverHandler'
 export function startScreen() {
   //   let donatedEth: number = 0
   //   let dotatedUSD: number = 0
-  let ethRate: number = 170
+  let ethRate: number = 157
   let donorsList: string = ''
 
   let serverURL = `https://dcl-slides.s3.us-east-2.amazonaws.com/donors-list.json` //`https://dcl-slides.s3.us-east-2.amazonaws.com/donors-list.json`
   // {"totalDonations":0.08020000000000001,"donorsList":"NicoE, Jungle"}
 
   let testDonorsList =
-    'NicoE, Jungle, Guest12343, Shibu, MANA, Tak, Foreverguest, Roychu, Pravus, Brian, adadf, adfadf, agdhgdh, 1234125, lorem, ipsum, tobe, ornottobe, vitalik, satoshi, tuvieja, mmlpqtp'
-
+    'Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu' // Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS, Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu, Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS, Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu, Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS, Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu, Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS, Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu, Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS'
   let screen = new Entity()
   //screen.addComponent(new BoxShape())
   screen.addComponent(
@@ -73,7 +72,7 @@ export function startScreen() {
   )
   let amountContextText = new TextShape()
   amountContextText.fontSize = 22
-  amountContextText.value = 'ETH =              USD'
+  amountContextText.value = 'ETH =                 USD'
   amountContext.addComponent(amountContextText)
 
   let thanks = new Entity()
@@ -93,12 +92,12 @@ export function startScreen() {
   list.setParent(screen)
   list.addComponent(
     new Transform({
-      position: new Vector3(0, 2, 0),
+      position: new Vector3(0, 2.5, 0),
       //rotation: Quaternion.Euler(0, 180, 0),
     })
   )
   let listText = new TextShape()
-  listText.fontSize = 7
+  listText.fontSize = 5
   listText.value = testDonorsList
   list.addComponent(listText)
 
@@ -145,12 +144,11 @@ export function startScreen() {
         let ethamount = (Number(json.totalDonations) * ethRate).toFixed(2)
         usdAmountText.value = ethamount
         animateHeart()
-
-        //listText.value = parseList(testDonorsList)
       }
       if (donorsList != json.donorsList) {
         donorsList = json.donorsList
         listText.value = parseList(donorsList)
+        //listText.value = parseList(testDonorsList)
       }
     } catch {
       log('couldnt fetch donations data')
@@ -163,7 +161,8 @@ export function startScreen() {
   }
 
   function parseList(donatorList: string): string {
-    const lineLength: number = 100
+    const lineLength: number = 140
+    const numberOfLines: number = 13
     let listArray: string[] = donatorList.split(',')
     let listLines: string[] = ['']
     let finalListString: string = ''
@@ -178,7 +177,7 @@ export function startScreen() {
       }
     }
 
-    let firstLine = listLines.length - 10
+    let firstLine = listLines.length - numberOfLines
     if (firstLine < 0) {
       firstLine = 0
     }

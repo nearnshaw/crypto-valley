@@ -1,4 +1,4 @@
-import { openUI } from './ui'
+import { openUI1 } from './ui'
 import utils from '../node_modules/decentraland-ecs-utils/index'
 import { sceneMessageBus } from './game'
 
@@ -27,6 +27,10 @@ export class Dispenser extends Entity {
     this.getComponent(Animator).addClip(this.newMaskAnim)
     this.idleAnim.play()
 
+    let collider = new Entity()
+    collider.addComponent(new GLTFShape('models/machine-collider.glb'))
+    collider.setParent(this)
+
     this.id = id
 
     let heartButton = new Entity()
@@ -39,7 +43,7 @@ export class Dispenser extends Entity {
         (e) => {
           heartButton.getComponent(Animator).getClip('Action').stop()
           heartButton.getComponent(Animator).getClip('Action').play()
-          openUI(wearableName, this)
+          openUI1(wearableName, this)
         },
         { hoverText: 'Donate' }
       )

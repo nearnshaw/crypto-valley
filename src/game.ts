@@ -1,7 +1,7 @@
 import { AmbientSound } from './ambient'
 import { currentSlide, sceneName, switchSlide } from './serverHandler'
 
-import { openUI, currentMask } from './ui'
+import { openUI1, currentMask } from './ui'
 import utils from '../node_modules/decentraland-ecs-utils/index'
 import decentralandEcsUtils from '../node_modules/decentraland-ecs-utils/index'
 import { Dispenser } from './dispenser'
@@ -165,7 +165,8 @@ const machine1 = new Dispenser(
     position: new Vector3(42, 1.3, 59),
     rotation: Quaternion.Euler(0, 180, 0),
   },
-  'protection_mask_abstract_mask', //'mask_10'
+  //'protection_mask_abstract_mask', //'mask_10'
+  'mask_10',
   'machine1'
 )
 
@@ -340,12 +341,12 @@ Machines.push(machine18)
 
 //// MUSIC
 
-// const streamSource = new Entity()
-// streamSource.addComponent(new Transform({ position: new Vector3(56, 10, 55) }))
-// streamSource.addComponent(
-//   new AudioStream('https://icecast.ravepartyradio.org/ravepartyradio-192.mp3')
-// )
-// engine.addEntity(streamSource)
+const streamSource = new Entity()
+streamSource.addComponent(new Transform({ position: new Vector3(56, 10, 55) }))
+streamSource.addComponent(
+  new AudioStream('https://icecast.ravepartyradio.org/ravepartyradio-192.mp3')
+)
+engine.addEntity(streamSource)
 
 startScreen()
 
@@ -361,7 +362,9 @@ startScreen()
 
 // engine.addSystem(new CameraTrackSystem())
 
-//openUI('Mask10', machine1)
+//openUI1('protection_mask_tiger_mask', machine1)
+
+//openUI1('mask_10', machine1)
 
 sceneMessageBus.on('boughtMask', (e) => {
   log(e.id)
