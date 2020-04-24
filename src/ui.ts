@@ -25,7 +25,7 @@ export let currentMask: mask = { type: 'none', stand: null, hasStock: true }
 export async function openUI1(selectedMask: string, stand: Dispenser) {
   UIOpenTime = +Date.now()
 
-  donatedMoney = 0.058
+  //donatedMoney = 0.058
   background1.visible = true
   background1.isPointerBlocker = true
   AcceptButton.visible = true
@@ -125,7 +125,7 @@ donationInput.width = 150 * scale
 donationInput.height = 50 * scale
 donationInput.hAlign = 'center'
 donationInput.vAlign = 'center'
-donationInput.positionY = 5
+donationInput.positionY = -5
 donationInput.positionX = -110
 donationInput.fontSize = 40 * scale
 donationInput.vTextAlign = 'center'
@@ -240,7 +240,7 @@ warningNoStock.width = 950 * scale
 warningNoStock.height = 40 * scale
 warningNoStock.hAlign = 'center'
 warningNoStock.vAlign = 'center'
-warningNoStock.positionY = -30
+warningNoStock.positionY = -35
 warningNoStock.positionX = 25
 warningNoStock.sourceLeft = 50
 warningNoStock.sourceTop = 1090
@@ -307,7 +307,8 @@ CancelButton.onClick = new OnClick(() => {
 })
 
 export const NFTComing = new UIText(screenSpaceUI)
-NFTComing.value = 'Your NFT/s are being minted, they will be here soon!'
+NFTComing.value =
+  'Sign the transaction to have your NFT/s minted and sent to you!'
 NFTComing.width = 200 * scale
 NFTComing.height = 50 * scale
 NFTComing.hAlign = 'center'

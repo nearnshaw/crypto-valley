@@ -10,7 +10,7 @@ export function startScreen() {
   // {"totalDonations":0.08020000000000001,"donorsList":"NicoE, Jungle"}
 
   let testDonorsList =
-    'Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu' // Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS, Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu, Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS, Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu, Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS, Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu, Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS, Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu, Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS'
+    'Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel' //, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS, Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu, Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS, Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu, Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS, Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu, Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS, Jungle, Nacho, NicoE, Moonlight, Shibu, Warhol, Satosh1, Felblob, Rednitrous18, Isaac, Macintosh, Norminal, JackHerer, StarLamVu, Alyx, Michiel, Bardock, Carinaro, Blackstar, Daniel, SugarClub, yuangang, HanSoIo, ToxSam, WinklevossTwins, 1314520, Mavega, Pony, PeterD, CoronaVirus, guiguishushu, imoasis, Hailei, 0000, 88, Lorenzo, Savior, kybernaut, Demi, cazala, ESP0RTS'
   let screen = new Entity()
   //screen.addComponent(new BoxShape())
   screen.addComponent(
@@ -25,7 +25,7 @@ export function startScreen() {
   header.setParent(screen)
   header.addComponent(
     new Transform({
-      position: new Vector3(0, 13, 0),
+      position: new Vector3(0, 14, 0),
       //rotation: Quaternion.Euler(0, 180, 0),
     })
   )
@@ -38,7 +38,7 @@ export function startScreen() {
   ethAmount.setParent(screen)
   ethAmount.addComponent(
     new Transform({
-      position: new Vector3(-10, 10, 0),
+      position: new Vector3(-10.5, 11, 0),
       //rotation: Quaternion.Euler(0, 180, 0),
     })
   )
@@ -52,7 +52,7 @@ export function startScreen() {
   usdAmount.setParent(screen)
   usdAmount.addComponent(
     new Transform({
-      position: new Vector3(5, 10, 0),
+      position: new Vector3(5, 11, 0),
       //rotation: Quaternion.Euler(0, 180, 0),
     })
   )
@@ -66,7 +66,7 @@ export function startScreen() {
   amountContext.setParent(screen)
   amountContext.addComponent(
     new Transform({
-      position: new Vector3(4, 10, 0),
+      position: new Vector3(4, 11, 0),
       //rotation: Quaternion.Euler(0, 180, 0),
     })
   )
@@ -79,7 +79,7 @@ export function startScreen() {
   thanks.setParent(screen)
   thanks.addComponent(
     new Transform({
-      position: new Vector3(0, 7.5, 0),
+      position: new Vector3(0, 8.5, 0),
       //rotation: Quaternion.Euler(0, 180, 0),
     })
   )
@@ -92,7 +92,7 @@ export function startScreen() {
   list.setParent(screen)
   list.addComponent(
     new Transform({
-      position: new Vector3(0, 2.5, 0),
+      position: new Vector3(0, 3.25, 0),
       //rotation: Quaternion.Euler(0, 180, 0),
     })
   )
@@ -105,7 +105,7 @@ export function startScreen() {
   heart.setParent(screen)
   heart.addComponent(
     new Transform({
-      position: new Vector3(3.7, 7.5, 0),
+      position: new Vector3(3.7, 8.5, 0),
       rotation: Quaternion.Euler(0, 180, 0),
       scale: new Vector3(4, 4, 4),
     })
@@ -137,7 +137,7 @@ export function startScreen() {
       let response = await fetch(serverURL)
       let json = await response.json()
       //log(json)
-      let trimmedAmount = Number(json.totalDonations).toFixed(4)
+      let trimmedAmount = Number(json.totalDonations).toFixed(3)
       if (ethAmountText.value != trimmedAmount) {
         log('updating eth donations')
         ethAmountText.value = trimmedAmount
@@ -162,7 +162,7 @@ export function startScreen() {
 
   function parseList(donatorList: string): string {
     const lineLength: number = 140
-    const numberOfLines: number = 13
+    const numberOfLines: number = 15
     let listArray: string[] = donatorList.split(',')
     let listLines: string[] = ['']
     let finalListString: string = ''

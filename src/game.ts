@@ -165,8 +165,8 @@ const machine1 = new Dispenser(
     position: new Vector3(42, 1.3, 59),
     rotation: Quaternion.Euler(0, 180, 0),
   },
-  //'protection_mask_abstract_mask', //'mask_10'
-  'mask_10',
+  'protection_mask_abstract_mask',
+  //'mask_10',
   'machine1'
 )
 
