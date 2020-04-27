@@ -4,7 +4,7 @@ import utils from 'node_modules/decentraland-ecs-utils/index'
 
 export const apiUrl = 'https://slides.decentraland.zone' //'https://192.34.60.92:443' //'http://192.34.60.92:7753' //'http://127.0.0.1:7753'
 
-export const sceneName = 'demoroom'
+export const sceneName = 'valley'
 
 export var currentSlide: number = 0
 

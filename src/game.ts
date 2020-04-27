@@ -189,7 +189,7 @@ engine.addEntity(buttonLast)
 const streamSource = new Entity()
 streamSource.addComponent(new Transform({ position: new Vector3(56, 10, 55) }))
 streamSource.addComponent(
-  new AudioStream('https://icecast.ravepartyradio.org/ravepartyradio-192.mp3')
+  new AudioStream('https://dclcoreradio.com/dclradio.ogg')
 )
 engine.addEntity(streamSource)
 
