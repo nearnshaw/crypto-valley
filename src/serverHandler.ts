@@ -4,9 +4,13 @@ import utils from 'node_modules/decentraland-ecs-utils/index'
 
 export const apiUrl = 'https://slides.decentraland.zone' //'https://192.34.60.92:443' //'http://192.34.60.92:7753' //'http://127.0.0.1:7753'
 
+export const amazonUrl = 'https://dcl-slides.s3.us-east-2.amazonaws.com'
+
 export const sceneName = 'valley'
 
 export var currentSlide: number = 0
+
+export var currentPresentation: string = ''
 
 var linesPerGuestBookPage = 5
 
@@ -31,7 +35,7 @@ let allSignatures = []
 
 //// CANVAS
 
-let initialurl = 'https://dcl-slides.s3.us-east-2.amazonaws.com/carl/slide1.png'
+let initialurl = amazonUrl + '/dclblogger/slide1.png'
 
 export let CanvasMaterial = new Material()
 CanvasMaterial.albedoTexture = new Texture(initialurl)
@@ -78,7 +82,7 @@ engine.addEntity(canvas2)
 
 // engine.addSystem(new CheckServer(refreshInterval))
 
-getFromServer(true)
+getFromServer()
 
 // when a pixel is clicked, send data to server
 
@@ -87,7 +91,7 @@ export function switchSlide(scene: string, slideNumber: number) {
   if (currentSlide < 0) {
     currentSlide = 0
   }
-  let url = `${apiUrl}/api/dclslides/setslide?scene=${scene}&page=${slideNumber.toString()}`
+  let url = `${apiUrl}/api/dclslides/setslide?scene=${scene}&page=${currentSlide.toString()}`
   let method = 'POST'
   let headers = { 'Content-Type': 'application/json' }
 
@@ -97,13 +101,21 @@ export function switchSlide(scene: string, slideNumber: number) {
         headers: headers,
         method: method,
       }).then(() => {
-        fetchSlide(sceneName, slideNumber)
+        let slideUrl =
+          amazonUrl +
+          '/' +
+          currentPresentation +
+          '/' +
+          'slide' +
+          currentSlide +
+          '.png'
+        updateCanvasMaterial(slideUrl)
+        sceneMessageBus.emit('checkslides', {})
       })
     } catch {
       log('error getting slide data')
     }
   })
-  sceneMessageBus.emit('checkslides', {})
 }
 
 export function fetchSlide(scene: string, slideNumber: number) {
@@ -117,27 +129,40 @@ export function fetchSlide(scene: string, slideNumber: number) {
 
       updateCanvasMaterial(json.slide)
     } catch {
-      log('error getting slide data')
+      log('error getting slide data ', url)
     }
   })
 }
 
-export function getFromServer(force?: boolean) {
-  let url = `${apiUrl}/api/dclslides/currentslide?scene=${sceneName}`
+export function getFromServer() {
+  let url = amazonUrl + '/' + sceneName + '/scene.json'
 
   executeTask(async () => {
     try {
       let response = await fetch(url)
       let json = await response.json()
 
-      if (currentSlide != parseInt(json.slideNumber) || force) {
-        currentSlide = parseInt(json.slideNumber)
-        log('updating slide ', currentSlide)
-        updateCanvasMaterial(json.slide)
+      if (
+        currentSlide !== parseInt(json.currentSlide) ||
+        currentPresentation !== String(json.presentation)
+      ) {
+        currentSlide = parseInt(json.currentSlide)
+        currentPresentation = String(json.presentation)
+        log('updating slide ', json)
+
+        let slideUrl =
+          amazonUrl +
+          '/' +
+          currentPresentation +
+          '/' +
+          'slide' +
+          currentSlide +
+          '.png'
+        updateCanvasMaterial(slideUrl)
       }
       //getGuestBook()
     } catch {
-      log('error getting slide data')
+      log('error getting slide data ', url)
     }
   })
 }
@@ -161,9 +186,9 @@ export function signGuestBook() {
 
       let json = await response.json()
       //log(json)
-      await getFromServer(true)
+      await getFromServer()
     } catch {
-      log('error signing guestbook')
+      log('error signing guestbook ', url)
     }
   })
 }
@@ -219,10 +244,10 @@ let confirmDummy = new Entity()
 engine.addEntity(confirmDummy)
 
 sceneMessageBus.on('checkslides', (e) => {
-  getFromServer(true)
+  getFromServer()
   confirmDummy.addComponentOrReplace(
     new utils.Delay(500, () => {
-      getFromServer(true)
+      getFromServer()
     })
   )
 })
