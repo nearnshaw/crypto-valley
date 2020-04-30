@@ -31,34 +31,35 @@ let allSignatures = []
 
 //// CANVAS
 
-let initialurl = 'https://dcl-slides.s3.us-east-2.amazonaws.com/carl/slide1.png'
+let initialurl =
+  'https://dcl-slides.s3.us-east-2.amazonaws.com/dclblogger/slide0.png'
 
 export let CanvasMaterial = new Material()
 CanvasMaterial.albedoTexture = new Texture(initialurl)
 
-export let canvas = new Entity()
-canvas.addComponent(new BoxShape())
-canvas.addComponent(CanvasMaterial)
-canvas.addComponent(
-  new Transform({
-    position: new Vector3(56, 13.9, 61),
-    rotation: Quaternion.Euler(0, 180, 180),
-    scale: new Vector3(10 * 3.2, 5.6 * 3.2, 0.01),
-  })
-)
-engine.addEntity(canvas)
+// export let canvas = new Entity()
+// canvas.addComponent(new BoxShape())
+// canvas.addComponent(CanvasMaterial)
+// canvas.addComponent(
+//   new Transform({
+//     position: new Vector3(56, 13.9, 61),
+//     rotation: Quaternion.Euler(0, 180, 180),
+//     scale: new Vector3(10 * 3.2, 5.6 * 3.2, 0.01),
+//   })
+// )
+// engine.addEntity(canvas)
 
-export let canvas2 = new Entity()
-canvas2.addComponent(new BoxShape())
-canvas2.addComponent(CanvasMaterial)
-canvas2.addComponent(
-  new Transform({
-    position: new Vector3(56, 2.28, 53.03),
-    rotation: Quaternion.Euler(-40, 180, 0),
-    scale: new Vector3(16 * 0.05, 9 * 0.05, 0.005),
-  })
-)
-engine.addEntity(canvas2)
+// export let canvas2 = new Entity()
+// canvas2.addComponent(new BoxShape())
+// canvas2.addComponent(CanvasMaterial)
+// canvas2.addComponent(
+//   new Transform({
+//     position: new Vector3(56, 2.28, 53.03),
+//     rotation: Quaternion.Euler(-40, 180, 0),
+//     scale: new Vector3(16 * 0.05, 9 * 0.05, 0.005),
+//   })
+// )
+// engine.addEntity(canvas2)
 
 /// AUTOUPDATES
 
@@ -78,7 +79,7 @@ engine.addEntity(canvas2)
 
 // engine.addSystem(new CheckServer(refreshInterval))
 
-getFromServer(true)
+// getFromServer(true)
 
 // when a pixel is clicked, send data to server
 
@@ -143,9 +144,9 @@ export function getFromServer(force?: boolean) {
 }
 
 export function updateCanvasMaterial(texture: string) {
-  CanvasMaterial.albedoTexture = new Texture(texture)
-  canvas.addComponentOrReplace(CanvasMaterial)
-  canvas2.addComponentOrReplace(CanvasMaterial)
+  //   CanvasMaterial.albedoTexture = new Texture(texture)
+  //   canvas.addComponentOrReplace(CanvasMaterial)
+  //   canvas2.addComponentOrReplace(CanvasMaterial)
 }
 
 export function signGuestBook() {
@@ -218,11 +219,11 @@ export function signGuestBook() {
 let confirmDummy = new Entity()
 engine.addEntity(confirmDummy)
 
-sceneMessageBus.on('checkslides', (e) => {
-  getFromServer(true)
-  confirmDummy.addComponentOrReplace(
-    new utils.Delay(500, () => {
-      getFromServer(true)
-    })
-  )
-})
+// sceneMessageBus.on('checkslides', (e) => {
+//   getFromServer(true)
+//   confirmDummy.addComponentOrReplace(
+//     new utils.Delay(500, () => {
+//       getFromServer(true)
+//     })
+//   )
+// })
