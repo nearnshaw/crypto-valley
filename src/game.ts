@@ -214,7 +214,7 @@ let music = new AudioStream(
   'https://icecast.ravepartyradio.org/ravepartyradio-192.mp3'
 )
 streamSource.addComponent(music)
-music.playing = false
+//music.playing = false
 engine.addEntity(streamSource)
 
 //////// HACK TO SEE POSITIONS
@@ -229,62 +229,62 @@ engine.addEntity(streamSource)
 
 // engine.addSystem(new CameraTrackSystem())
 
-const roofMusicrTrigger = new Entity()
-roofMusicrTrigger.addComponent(
-  new Transform({ position: new Vector3(56, 30, 26 + 8) })
-)
+// const roofMusicrTrigger = new Entity()
+// roofMusicrTrigger.addComponent(
+//   new Transform({ position: new Vector3(56, 30, 26 + 8) })
+// )
 
-let roofMusicrTriggerBox = new utils.TriggerBoxShape(
-  new Vector3(80, 20, 70),
-  Vector3.Zero()
-)
-roofMusicrTrigger.addComponent(
-  new utils.TriggerComponent(
-    roofMusicrTriggerBox, //shape
-    0, //layer
-    0, //triggeredByLayer
-    null, //onTriggerEnter
-    null, //onTriggerExit
-    () => {
-      music.playing = true
-      log('triggered!')
-    },
-    () => {
-      music.playing = false
-    },
-    false
-  )
-)
-engine.addEntity(roofMusicrTrigger)
+// let roofMusicrTriggerBox = new utils.TriggerBoxShape(
+//   new Vector3(80, 20, 70),
+//   Vector3.Zero()
+// )
+// roofMusicrTrigger.addComponent(
+//   new utils.TriggerComponent(
+//     roofMusicrTriggerBox, //shape
+//     0, //layer
+//     0, //triggeredByLayer
+//     null, //onTriggerEnter
+//     null, //onTriggerExit
+//     () => {
+//       music.playing = true
+//       log('triggered!')
+//     },
+//     () => {
+//       music.playing = false
+//     },
+//     false
+//   )
+// )
+// engine.addEntity(roofMusicrTrigger)
 
-const e = new Entity()
-e.addComponent(new PlaneShape())
-e.addComponent(
-  new Transform({
-    position: new Vector3(56, 13.9, 61),
-    rotation: Quaternion.Euler(0, 180, 0),
-    scale: new Vector3(10 * 3.2, 5.6 * 3.2, 0.01),
-  })
-)
-const v = new VideoTexture(new VideoClip('http://134.122.31.53/hls/test.m3u8'))
-const mat = new BasicMaterial()
-mat.texture = v
-e.addComponent(mat)
-e.addComponent(
-  new OnClick(() => {
-    v.playing = !v.playing
-    label.getComponent(TextShape).value = ''
-  })
-)
-engine.addEntity(e)
+// const e = new Entity()
+// e.addComponent(new PlaneShape())
+// e.addComponent(
+//   new Transform({
+//     position: new Vector3(56, 13.9, 61),
+//     rotation: Quaternion.Euler(0, 180, 0),
+//     scale: new Vector3(10 * 3.2, 5.6 * 3.2, 0.01),
+//   })
+// )
+// const v = new VideoTexture(new VideoClip('http://134.122.31.53/hls/test.m3u8'))
+// const mat = new BasicMaterial()
+// mat.texture = v
+// e.addComponent(mat)
+// e.addComponent(
+//   new OnClick(() => {
+//     v.playing = !v.playing
+//     label.getComponent(TextShape).value = ''
+//   })
+// )
+// engine.addEntity(e)
 
-let label = new Entity()
-label.addComponent(
-  new Transform({
-    position: new Vector3(56, 13.9, 60.9),
-    rotation: Quaternion.Euler(0, 0, 0),
-  })
-)
-label.addComponent(new TextShape('Click to start streaming!'))
-label.getComponent(TextShape).color = Color3.Black()
-engine.addEntity(label)
+// let label = new Entity()
+// label.addComponent(
+//   new Transform({
+//     position: new Vector3(56, 13.9, 60.9),
+//     rotation: Quaternion.Euler(0, 0, 0),
+//   })
+// )
+// label.addComponent(new TextShape('Click to start streaming!'))
+// label.getComponent(TextShape).color = Color3.Black()
+// engine.addEntity(label)
