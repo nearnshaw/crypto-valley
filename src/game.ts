@@ -1,4 +1,4 @@
-import { currentSlide, sceneName, switchSlide } from './serverHandler'
+//import { currentSlide, sceneName, switchSlide } from './serverHandler'
 
 import utils from '../node_modules/decentraland-ecs-utils/index'
 import decentralandEcsUtils from '../node_modules/decentraland-ecs-utils/index'
@@ -106,81 +106,81 @@ engine.addEntity(elevator)
 
 /////// Buttons
 
-const base = new Entity()
+// const base = new Entity()
 
-base.addComponent(new GLTFShape('models/Base.glb'))
+// base.addComponent(new GLTFShape('models/Base.glb'))
 
-base.addComponent(
-  new Transform({
-    position: new Vector3(56, 1.25, 53),
-    rotation: Quaternion.Euler(0, 90, 0),
-  })
-)
-engine.addEntity(base)
+// base.addComponent(
+//   new Transform({
+//     position: new Vector3(56, 1.25, 53),
+//     rotation: Quaternion.Euler(0, 90, 0),
+//   })
+// )
+// engine.addEntity(base)
 
-const buttonNext = new Entity()
+// const buttonNext = new Entity()
 
-buttonNext.addComponent(new GLTFShape('models/Right_Arrow.glb'))
+// buttonNext.addComponent(new GLTFShape('models/Right_Arrow.glb'))
 
-const animatorN = new Animator()
-const clipButtonN = new AnimationState('RightArrow_Action', { looping: false })
-animatorN.addClip(clipButtonN)
-buttonNext.addComponent(animatorN)
-buttonNext.addComponent(
-  new Transform({
-    position: new Vector3(56, 1.25, 53),
-    rotation: Quaternion.Euler(0, 90, 0),
-  })
-)
+// const animatorN = new Animator()
+// const clipButtonN = new AnimationState('RightArrow_Action', { looping: false })
+// animatorN.addClip(clipButtonN)
+// buttonNext.addComponent(animatorN)
+// buttonNext.addComponent(
+//   new Transform({
+//     position: new Vector3(56, 1.25, 53),
+//     rotation: Quaternion.Euler(0, 90, 0),
+//   })
+// )
 
-buttonNext.addComponent(
-  new OnPointerDown(
-    () => {
-      clipButtonN.stop()
-      clipButtonN.play()
-      switchSlide(sceneName, currentSlide + 1)
-    },
-    {
-      button: ActionButton.POINTER,
-      hoverText: 'Next',
-      distance: 10,
-    }
-  )
-)
+// buttonNext.addComponent(
+//   new OnPointerDown(
+//     () => {
+//       clipButtonN.stop()
+//       clipButtonN.play()
+//       switchSlide(sceneName, currentSlide + 1)
+//     },
+//     {
+//       button: ActionButton.POINTER,
+//       hoverText: 'Next',
+//       distance: 10,
+//     }
+//   )
+// )
 
-engine.addEntity(buttonNext)
+// engine.addEntity(buttonNext)
 
-const buttonLast = new Entity()
+// const buttonLast = new Entity()
 
-buttonLast.addComponent(new GLTFShape('models/Left_Arrow.glb'))
+// buttonLast.addComponent(new GLTFShape('models/Left_Arrow.glb'))
 
-const animatorL = new Animator()
-const clipButtonL = new AnimationState('LeftArrow_Action', { looping: false })
-animatorL.addClip(clipButtonL)
-buttonLast.addComponent(animatorL)
-buttonLast.addComponent(
-  new Transform({
-    position: new Vector3(56, 1.25, 53),
-    rotation: Quaternion.Euler(0, 90, 0),
-  })
-)
+// const animatorL = new Animator()
+// const clipButtonL = new AnimationState('LeftArrow_Action', { looping: false })
+// animatorL.addClip(clipButtonL)
+// buttonLast.addComponent(animatorL)
+// buttonLast.addComponent(
+//   new Transform({
+//     position: new Vector3(56, 1.25, 53),
+//     rotation: Quaternion.Euler(0, 90, 0),
+//   })
+// )
 
-buttonLast.addComponent(
-  new OnPointerDown(
-    () => {
-      clipButtonL.stop()
-      clipButtonL.play()
-      switchSlide(sceneName, currentSlide - 1)
-    },
-    {
-      button: ActionButton.POINTER,
-      hoverText: 'Last',
-      distance: 10,
-    }
-  )
-)
+// buttonLast.addComponent(
+//   new OnPointerDown(
+//     () => {
+//       clipButtonL.stop()
+//       clipButtonL.play()
+//       switchSlide(sceneName, currentSlide - 1)
+//     },
+//     {
+//       button: ActionButton.POINTER,
+//       hoverText: 'Last',
+//       distance: 10,
+//     }
+//   )
+// )
 
-engine.addEntity(buttonLast)
+// engine.addEntity(buttonLast)
 
 /////// DISPENSER MACHINES
 
@@ -210,7 +210,7 @@ engine.addEntity(buttonLast)
 
 const streamSource = new Entity()
 streamSource.addComponent(new Transform({ position: new Vector3(56, 10, 55) }))
-let music = new AudioStream(
+export let music = new AudioStream(
   'https://icecast.ravepartyradio.org/ravepartyradio-192.mp3'
 )
 streamSource.addComponent(music)
@@ -229,16 +229,16 @@ engine.addEntity(streamSource)
 
 // engine.addSystem(new CameraTrackSystem())
 
-const roofMusicrTrigger = new Entity()
-roofMusicrTrigger.addComponent(
+export const VideoTrigger = new Entity()
+VideoTrigger.addComponent(
   new Transform({ position: new Vector3(56, 30, 26 + 8) })
 )
 
 let roofMusicrTriggerBox = new utils.TriggerBoxShape(
-  new Vector3(80, 20, 70),
+  new Vector3(80, 80, 70),
   Vector3.Zero()
 )
-roofMusicrTrigger.addComponent(
+VideoTrigger.addComponent(
   new utils.TriggerComponent(
     roofMusicrTriggerBox, //shape
     0, //layer
@@ -252,31 +252,36 @@ roofMusicrTrigger.addComponent(
     () => {
       music.playing = false
     },
-    false
+    true
   )
 )
-engine.addEntity(roofMusicrTrigger)
+engine.addEntity(VideoTrigger)
 
-const e = new Entity()
-e.addComponent(new PlaneShape())
-e.addComponent(
+export const largeScreen = new Entity()
+largeScreen.addComponent(new PlaneShape())
+largeScreen.addComponent(
   new Transform({
     position: new Vector3(56, 13.9, 61),
     rotation: Quaternion.Euler(0, 180, 0),
     scale: new Vector3(10 * 3.2, 5.6 * 3.2, 0.01),
   })
 )
-const v = new VideoTexture(new VideoClip('http://134.122.31.53/hls/test.m3u8'))
+export const v = new VideoTexture(
+  new VideoClip(
+    'https://d3i7bb073a5x09.cloudfront.net/out/v1/6acc6d34145d435eb78710ac1512b2bf/index.m3u8'
+  )
+)
+
 const mat = new BasicMaterial()
 mat.texture = v
-e.addComponent(mat)
-e.addComponent(
+largeScreen.addComponent(mat)
+largeScreen.addComponent(
   new OnClick(() => {
     v.playing = !v.playing
     label.getComponent(TextShape).value = ''
   })
 )
-engine.addEntity(e)
+engine.addEntity(largeScreen)
 
 let label = new Entity()
 label.addComponent(
