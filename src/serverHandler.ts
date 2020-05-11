@@ -6,49 +6,50 @@ import { v, music } from './game'
 export const refreshInterval: number = 5
 let partyTime = new Date('2020-05-09T19:33:25-03:00')
 
-export function checkTime() {
-  let url = `http://worldtimeapi.org/api/timezone/America/Argentina/Buenos_Aires`
+// export function checkTime() {
+//   let url = `http://worldtimeapi.org/api/timezone/America/Argentina/Buenos_Aires`
 
-  executeTask(async () => {
-    try {
-      let response = await fetch(url)
-      let json = await response.json()
-      log('time: ', json.datetime)
+//   executeTask(async () => {
+//     try {
+//       let response = await fetch(url)
+//       let json = await response.json()
+//       log('time: ', json.datetime)
 
-      let toDate = new Date(json.datetime)
+//       let toDate = new Date(json.datetime)
 
-      log('time: ', toDate)
-      if (toDate > partyTime) {
-        startParty()
-        engine.removeSystem(checkTimeSystem)
-      }
-    } catch {
-      log('error getting slide data')
-    }
-  })
-}
+//       log('time: ', toDate)
+//       if (toDate > partyTime) {
+//         startParty()
+//         engine.removeSystem(checkTimeSystem)
+//       }
+//     } catch {
+//       log('error getting slide data')
+//     }
+//   })
+// }
 
-export function startParty() {
-  log('PARTY TIME!')
-  v.playing = false
-  music.playing = true
-}
+// export function startParty() {
+//   log('PARTY TIME!')
+//   v.playing = false
+//   music.playing = true
+//   largeScreen.visible = false
+// }
 
-export class CheckTime implements ISystem {
-  timer: number
-  constructor(timer: number) {
-    this.timer = timer
-  }
-  update(dt: number) {
-    this.timer -= dt
-    if (this.timer < 0) {
-      this.timer = refreshInterval
-      checkTime()
-    }
-  }
-}
+// export class CheckTime implements ISystem {
+//   timer: number
+//   constructor(timer: number) {
+//     this.timer = timer
+//   }
+//   update(dt: number) {
+//     this.timer -= dt
+//     if (this.timer < 0) {
+//       this.timer = refreshInterval
+//       checkTime()
+//     }
+//   }
+// }
 
-let checkTimeSystem = engine.addSystem(new CheckTime(refreshInterval))
+// let checkTimeSystem = engine.addSystem(new CheckTime(refreshInterval))
 
 // export const apiUrl = 'https://slides.decentraland.zone' //'https://192.34.60.92:443' //'http://192.34.60.92:7753' //'http://127.0.0.1:7753'
 

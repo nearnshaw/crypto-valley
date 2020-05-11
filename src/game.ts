@@ -231,14 +231,43 @@ engine.addEntity(streamSource)
 
 export const VideoTrigger = new Entity()
 VideoTrigger.addComponent(
-  new Transform({ position: new Vector3(56, 30, 26 + 8) })
+  new Transform({ position: new Vector3(56, 10, 26 + 8) })
 )
 
-let roofMusicrTriggerBox = new utils.TriggerBoxShape(
-  new Vector3(80, 80, 70),
+let VideoTriggerBox = new utils.TriggerBoxShape(
+  new Vector3(80, 30, 70),
   Vector3.Zero()
 )
 VideoTrigger.addComponent(
+  new utils.TriggerComponent(
+    VideoTriggerBox, //shape
+    0, //layer
+    0, //triggeredByLayer
+    null, //onTriggerEnter
+    null, //onTriggerExit
+    () => {
+      v.playing = true
+      log('triggered!')
+    },
+    () => {
+      v.playing = false
+      //music.playing = false
+    },
+    false
+  )
+)
+engine.addEntity(VideoTrigger)
+
+export const MusicTrigger = new Entity()
+MusicTrigger.addComponent(
+  new Transform({ position: new Vector3(56, 35, 26 + 8) })
+)
+
+let roofMusicrTriggerBox = new utils.TriggerBoxShape(
+  new Vector3(80, 20, 70),
+  Vector3.Zero()
+)
+MusicTrigger.addComponent(
   new utils.TriggerComponent(
     roofMusicrTriggerBox, //shape
     0, //layer
@@ -251,11 +280,12 @@ VideoTrigger.addComponent(
     },
     () => {
       music.playing = false
+      //music.playing = false
     },
-    true
+    false
   )
 )
-engine.addEntity(VideoTrigger)
+engine.addEntity(MusicTrigger)
 
 export const largeScreen = new Entity()
 largeScreen.addComponent(new PlaneShape())
@@ -271,25 +301,27 @@ export const v = new VideoTexture(
     'https://d3i7bb073a5x09.cloudfront.net/out/v1/6acc6d34145d435eb78710ac1512b2bf/index.m3u8'
   )
 )
+v.playing = false
 
-const mat = new BasicMaterial()
-mat.texture = v
+const mat = new Material()
+mat.albedoTexture = v
+mat.roughness = 1
 largeScreen.addComponent(mat)
-largeScreen.addComponent(
-  new OnClick(() => {
-    v.playing = !v.playing
-    label.getComponent(TextShape).value = ''
-  })
-)
+// largeScreen.addComponent(
+//   new OnClick(() => {
+//     v.playing = !v.playing
+//     label.getComponent(TextShape).value = ''
+//   })
+// )
 engine.addEntity(largeScreen)
 
-let label = new Entity()
-label.addComponent(
-  new Transform({
-    position: new Vector3(56, 13.9, 60.9),
-    rotation: Quaternion.Euler(0, 0, 0),
-  })
-)
-label.addComponent(new TextShape('Click to start streaming!'))
-label.getComponent(TextShape).color = Color3.Black()
-engine.addEntity(label)
+// let label = new Entity()
+// label.addComponent(
+//   new Transform({
+//     position: new Vector3(56, 13.9, 60.9),
+//     rotation: Quaternion.Euler(0, 0, 0),
+//   })
+// )
+// label.addComponent(new TextShape('Click to start streaming!'))
+// label.getComponent(TextShape).color = Color3.Black()
+// engine.addEntity(label)
