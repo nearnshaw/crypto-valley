@@ -1,9 +1,22 @@
 //import { currentSlide, sceneName, switchSlide } from './serverHandler'
 
 import utils from '../node_modules/decentraland-ecs-utils/index'
-import decentralandEcsUtils from '../node_modules/decentraland-ecs-utils/index'
+import { startParty } from './partyUpstairs'
+//import decentralandEcsUtils from '../node_modules/decentraland-ecs-utils/index'
 
 export const sceneMessageBus = new MessageBus()
+
+//////// HACK TO SEE POSITIONS
+
+// const camera = Camera.instance
+
+// class CameraTrackSystem implements ISystem {
+//   update() {
+//     log(camera.position)
+//   }
+// }
+
+// engine.addSystem(new CameraTrackSystem())
 
 let building = new Entity()
 building.addComponent(new GLTFShape('models/DCL_CC.glb'))
@@ -208,27 +221,6 @@ engine.addEntity(elevator)
 
 //// MUSIC
 
-const streamSource = new Entity()
-streamSource.addComponent(new Transform({ position: new Vector3(56, 10, 55) }))
-export let music = new AudioStream(
-  'https://icecast.ravepartyradio.org/ravepartyradio-192.mp3'
-)
-streamSource.addComponent(music)
-music.playing = false
-engine.addEntity(streamSource)
-
-//////// HACK TO SEE POSITIONS
-
-// const camera = Camera.instance
-
-// class CameraTrackSystem implements ISystem {
-//   update() {
-//     log(camera.position)
-//   }
-// }
-
-// engine.addSystem(new CameraTrackSystem())
-
 export const VideoTrigger = new Entity()
 VideoTrigger.addComponent(
   new Transform({ position: new Vector3(56, 10, 26 + 8) })
@@ -258,35 +250,6 @@ VideoTrigger.addComponent(
 )
 engine.addEntity(VideoTrigger)
 
-export const MusicTrigger = new Entity()
-MusicTrigger.addComponent(
-  new Transform({ position: new Vector3(56, 35, 26 + 8) })
-)
-
-let roofMusicrTriggerBox = new utils.TriggerBoxShape(
-  new Vector3(80, 20, 70),
-  Vector3.Zero()
-)
-MusicTrigger.addComponent(
-  new utils.TriggerComponent(
-    roofMusicrTriggerBox, //shape
-    0, //layer
-    0, //triggeredByLayer
-    null, //onTriggerEnter
-    null, //onTriggerExit
-    () => {
-      music.playing = true
-      log('triggered!')
-    },
-    () => {
-      music.playing = false
-      //music.playing = false
-    },
-    false
-  )
-)
-engine.addEntity(MusicTrigger)
-
 export const largeScreen = new Entity()
 largeScreen.addComponent(new PlaneShape())
 largeScreen.addComponent(
@@ -307,21 +270,6 @@ const mat = new Material()
 mat.albedoTexture = v
 mat.roughness = 1
 largeScreen.addComponent(mat)
-// largeScreen.addComponent(
-//   new OnClick(() => {
-//     v.playing = !v.playing
-//     label.getComponent(TextShape).value = ''
-//   })
-// )
 engine.addEntity(largeScreen)
 
-// let label = new Entity()
-// label.addComponent(
-//   new Transform({
-//     position: new Vector3(56, 13.9, 60.9),
-//     rotation: Quaternion.Euler(0, 0, 0),
-//   })
-// )
-// label.addComponent(new TextShape('Click to start streaming!'))
-// label.getComponent(TextShape).color = Color3.Black()
-// engine.addEntity(label)
+startParty()

@@ -1,7 +1,7 @@
 // import { UserData, getUserData } from '@decentraland/Identity'
 // //import { signaturesUI, guestBookPage } from './ui'
 import utils from 'node_modules/decentraland-ecs-utils/index'
-import { v, music } from './game'
+//import { v, music } from './game'
 
 export const refreshInterval: number = 5
 let partyTime = new Date('2020-05-09T19:33:25-03:00')
