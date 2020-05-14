@@ -8,15 +8,15 @@ export const sceneMessageBus = new MessageBus()
 
 //////// HACK TO SEE POSITIONS
 
-// const camera = Camera.instance
+const camera = Camera.instance
 
-// class CameraTrackSystem implements ISystem {
-//   update() {
-//     log(camera.position)
-//   }
-// }
+class CameraTrackSystem implements ISystem {
+  update() {
+    log(camera.position)
+  }
+}
 
-// engine.addSystem(new CameraTrackSystem())
+engine.addSystem(new CameraTrackSystem())
 
 let building = new Entity()
 building.addComponent(new GLTFShape('models/DCL_CC.glb'))
