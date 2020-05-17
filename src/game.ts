@@ -260,9 +260,7 @@ largeScreen.addComponent(
   })
 )
 export const v = new VideoTexture(
-  new VideoClip(
-    'https://d3i7bb073a5x09.cloudfront.net/out/v1/6acc6d34145d435eb78710ac1512b2bf/index.m3u8'
-  )
+  new VideoClip('https://theuniverse.club/live/streamone/index.m3u8')
 )
 v.playing = false
 
