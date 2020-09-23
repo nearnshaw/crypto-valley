@@ -1,6 +1,7 @@
 //import { currentSlide, sceneName, switchSlide } from './serverHandler'
 
 import utils from '../node_modules/decentraland-ecs-utils/index'
+import { updateCoinData } from './marketData'
 import { startParty } from './partyUpstairs'
 //import decentralandEcsUtils from '../node_modules/decentraland-ecs-utils/index'
 
@@ -8,15 +9,29 @@ export const sceneMessageBus = new MessageBus()
 
 //////// HACK TO SEE POSITIONS
 
-// const camera = Camera.instance
-
-// class CameraTrackSystem implements ISystem {
-//   update() {
-//     log(camera.position)
-//   }
-// }
-
-// engine.addSystem(new CameraTrackSystem())
+Input.instance.subscribe('BUTTON_DOWN', ActionButton.PRIMARY, false, (e) => {
+  //   log(`pos: `, Camera.instance.position)
+  //   log(`rot: `, Camera.instance.rotation)
+  log(
+    `{ position: new Vector3(`,
+    Camera.instance.position.x,
+    ',',
+    Camera.instance.position.y,
+    ',',
+    Camera.instance.position.z,
+    `),
+		rotation: new Quaternion(`,
+    Camera.instance.rotation.x,
+    ',',
+    Camera.instance.rotation.y,
+    ',',
+    Camera.instance.rotation.z,
+    ',',
+    Camera.instance.rotation.w,
+    `),
+	  },`
+  )
+})
 
 let building = new Entity()
 building.addComponent(new GLTFShape('models/DCL_CC.glb'))
@@ -95,130 +110,6 @@ elevator.addComponent(
 )
 engine.addEntity(elevator)
 
-///// ROOF BANNER
-
-// let banner = new Entity()
-// banner.addComponent(new GLTFShape('models/banner.glb'))
-// banner.addComponent(
-//   new Transform({
-//     position: new Vector3(56, 0, 16 + 8),
-//     rotation: Quaternion.Euler(0, 180, 0),
-//   })
-// )
-// engine.addEntity(banner)
-
-///////  POSITIONAL TALK SOUND
-
-// let talk = new AmbientSound(
-//   { position: new Vector3(56, 2, 55) },
-//   'sounds/talk.mp3',
-//   0,
-//   true,
-//   1
-// )
-
-/////// Buttons
-
-// const base = new Entity()
-
-// base.addComponent(new GLTFShape('models/Base.glb'))
-
-// base.addComponent(
-//   new Transform({
-//     position: new Vector3(56, 1.25, 53),
-//     rotation: Quaternion.Euler(0, 90, 0),
-//   })
-// )
-// engine.addEntity(base)
-
-// const buttonNext = new Entity()
-
-// buttonNext.addComponent(new GLTFShape('models/Right_Arrow.glb'))
-
-// const animatorN = new Animator()
-// const clipButtonN = new AnimationState('RightArrow_Action', { looping: false })
-// animatorN.addClip(clipButtonN)
-// buttonNext.addComponent(animatorN)
-// buttonNext.addComponent(
-//   new Transform({
-//     position: new Vector3(56, 1.25, 53),
-//     rotation: Quaternion.Euler(0, 90, 0),
-//   })
-// )
-
-// buttonNext.addComponent(
-//   new OnPointerDown(
-//     () => {
-//       clipButtonN.stop()
-//       clipButtonN.play()
-//       switchSlide(sceneName, currentSlide + 1)
-//     },
-//     {
-//       button: ActionButton.POINTER,
-//       hoverText: 'Next',
-//       distance: 10,
-//     }
-//   )
-// )
-
-// engine.addEntity(buttonNext)
-
-// const buttonLast = new Entity()
-
-// buttonLast.addComponent(new GLTFShape('models/Left_Arrow.glb'))
-
-// const animatorL = new Animator()
-// const clipButtonL = new AnimationState('LeftArrow_Action', { looping: false })
-// animatorL.addClip(clipButtonL)
-// buttonLast.addComponent(animatorL)
-// buttonLast.addComponent(
-//   new Transform({
-//     position: new Vector3(56, 1.25, 53),
-//     rotation: Quaternion.Euler(0, 90, 0),
-//   })
-// )
-
-// buttonLast.addComponent(
-//   new OnPointerDown(
-//     () => {
-//       clipButtonL.stop()
-//       clipButtonL.play()
-//       switchSlide(sceneName, currentSlide - 1)
-//     },
-//     {
-//       button: ActionButton.POINTER,
-//       hoverText: 'Last',
-//       distance: 10,
-//     }
-//   )
-// )
-
-// engine.addEntity(buttonLast)
-
-/////// DISPENSER MACHINES
-
-// let Machines = []
-
-// const machine1 = new Dispenser(
-//   new GLTFShape('models/abstract-machine.glb'),
-//   {
-//     position: new Vector3(42, 1.3, 59),
-//     rotation: Quaternion.Euler(0, 180, 0),
-//   },
-//   'protection_mask_abstract_mask',
-//   //'mask_10',
-//   'machine1'
-// )
-
-// sceneMessageBus.on('boughtMask', (e) => {
-//   log(e.id)
-//   for (let machine of Machines) {
-//     if (machine.id == e.id) {
-//       machine.buy()
-//     }
-//   }
-// })
-
 //// MUSIC
 
 export const VideoTrigger = new Entity()
@@ -260,7 +151,7 @@ largeScreen.addComponent(
   })
 )
 export const v = new VideoTexture(
-  new VideoClip('https://video.dcl.guru/live/blockchainclass/index.m3u8')
+  new VideoClip('https://video.dcl.guru/live/ekoparty/index.m3u8') //'https://video.dcl.guru/live/nftlondon/index.m3u8')
 )
 v.playing = false
 
@@ -269,5 +160,7 @@ mat.albedoTexture = v
 mat.roughness = 1
 largeScreen.addComponent(mat)
 engine.addEntity(largeScreen)
+
+updateCoinData()
 
 startParty()
