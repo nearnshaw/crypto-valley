@@ -151,7 +151,7 @@ largeScreen.addComponent(
   })
 )
 export const v = new VideoTexture(
-  new VideoClip('https://video.dcl.guru/live/ekoparty/index.m3u8') //'https://video.dcl.guru/live/nftlondon/index.m3u8')
+  new VideoClip('https://video.dcl.guru/live/dclcoretv/index.m3u8') //'https://video.dcl.guru/live/nftlondon/index.m3u8')
 )
 v.playing = false
 
