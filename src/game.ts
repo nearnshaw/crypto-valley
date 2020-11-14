@@ -1,11 +1,11 @@
-//import { currentSlide, sceneName, switchSlide } from './serverHandler'
-
 import utils from '../node_modules/decentraland-ecs-utils/index'
 import { updateCoinData } from './marketData'
 import { startParty } from './partyUpstairs'
-//import decentralandEcsUtils from '../node_modules/decentraland-ecs-utils/index'
 
-export const sceneMessageBus = new MessageBus()
+const STREAM_URL = 'https://video.dcl.guru/live/dclcoretv/index.m3u8'
+
+//'https://video.dcl.guru/live/anorak/index.m3u8'
+//'https://video.dcl.guru/live/nftlondon/index.m3u8'
 
 //////// HACK TO SEE POSITIONS
 
@@ -32,6 +32,8 @@ Input.instance.subscribe('BUTTON_DOWN', ActionButton.PRIMARY, false, (e) => {
 	  },`
   )
 })
+
+export const sceneMessageBus = new MessageBus()
 
 let building = new Entity()
 building.addComponent(new GLTFShape('models/DCL_CC.glb'))
@@ -150,9 +152,7 @@ largeScreen.addComponent(
     scale: new Vector3(10 * 3.2, 5.6 * 3.2, 0.01),
   })
 )
-export const v = new VideoTexture(
-  new VideoClip('https://video.dcl.guru/live/dclcoretv/index.m3u8') //'https://video.dcl.guru/live/nftlondon/index.m3u8')
-)
+export const v = new VideoTexture(new VideoClip(STREAM_URL))
 v.playing = false
 
 const mat = new Material()
