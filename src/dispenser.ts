@@ -1,85 +1,60 @@
 // import { openUI1 } from './ui'
-// import utils from '../node_modules/decentraland-ecs-utils/index'
-// import { sceneMessageBus } from './game'
+import utils from '../node_modules/decentraland-ecs-utils/index'
+import { handlePoap } from './poapHandler'
+import { sceneMessageBus } from './game'
 
-// export class Dispenser extends Entity {
-//   idleAnim = new AnimationState('idle', { looping: true })
-//   buyAnim = new AnimationState('buy', { looping: false })
-//   newMaskAnim = new AnimationState('new_mask', { looping: false })
-//   buttonAnim = new AnimationState('Action', { looping: false })
-//   id: string
-//   constructor(
-//     model: GLTFShape,
-//     transform: TranformConstructorArgs,
-//     wearableName: string,
-//     id: string
-//     //,sound: AudioClip
-//   ) {
-//     super()
-//     engine.addEntity(this)
+export class Dispenser extends Entity {
+  idleAnim = new AnimationState('Idle_POAP', { looping: true })
+  buyAnim = new AnimationState('Action_POAP', { looping: false })
+  buttonAnim = new AnimationState('Button_Action', { looping: false })
+  eventName: string
+  constructor(transform: TranformConstructorArgs, eventName: string) {
+    super()
+    engine.addEntity(this)
 
-//     this.addComponent(model)
-//     this.addComponent(new Transform(transform))
+    this.addComponent(new GLTFShape('models/poap/POAP_dispenser.glb'))
+    this.addComponent(new Transform(transform))
 
-//     this.addComponent(new Animator())
-//     this.getComponent(Animator).addClip(this.idleAnim)
-//     this.getComponent(Animator).addClip(this.buyAnim)
-//     this.getComponent(Animator).addClip(this.newMaskAnim)
-//     this.idleAnim.play()
+    this.addComponent(new Animator())
+    this.getComponent(Animator).addClip(this.idleAnim)
+    this.getComponent(Animator).addClip(this.buyAnim)
+    this.idleAnim.play()
 
-//     let collider = new Entity()
-//     collider.addComponent(new GLTFShape('models/machine-collider.glb'))
-//     collider.setParent(this)
+    this.eventName = eventName
 
-//     this.id = id
+    let button = new Entity()
+    button.addComponent(new GLTFShape('models/poap/POAP_button.glb'))
+    button.addComponent(new Animator())
+    button.getComponent(Animator).addClip(this.buttonAnim)
+    button.setParent(this)
+    button.addComponent(
+      new OnPointerDown(
+        (e) => {
+          button.getComponent(Animator).getClip('Action').stop()
+          button.getComponent(Animator).getClip('Action').play()
+          sceneMessageBus.emit('activatePoap', {})
+          handlePoap(eventName)
+        },
+        { hoverText: 'Get Attendance Token' }
+      )
+    )
+    engine.addEntity(button)
+  }
 
-//     let heartButton = new Entity()
-//     heartButton.addComponent(new GLTFShape('models/heart-button.glb'))
-//     heartButton.addComponent(new Animator())
-//     heartButton.getComponent(Animator).addClip(this.buttonAnim)
-//     heartButton.setParent(this)
-//     heartButton.addComponent(
-//       new OnPointerDown(
-//         (e) => {
-//           heartButton.getComponent(Animator).getClip('Action').stop()
-//           heartButton.getComponent(Animator).getClip('Action').play()
-//           openUI1(wearableName, this)
-//         },
-//         { hoverText: 'Donate' }
-//       )
-//     )
-//     engine.addEntity(heartButton)
+  public activate(): void {
+    let anim = this.getComponent(Animator)
 
-//     let standParticles = new Entity()
-//     standParticles.addComponent(new GLTFShape('models/particles.glb'))
-//     standParticles.setParent(this)
-//     engine.addEntity(standParticles)
+    anim.getClip('Idle_POAP').stop()
+    anim.getClip('Action_POAP').stop()
 
-//     //this.addComponent(new AudioSource(sound))
-//   }
+    anim.getClip('Action_POAP').play()
 
-//   public buy(): void {
-//     let anim = this.getComponent(Animator)
+    this.addComponentOrReplace(
+      new utils.Delay(4000, () => {
+        anim.getClip('Action_POAP').stop()
 
-//     anim.getClip('idle').stop()
-//     anim.getClip('buy').stop()
-//     anim.getClip('new_mask').stop()
-
-//     anim.getClip('buy').play()
-
-//     this.addComponentOrReplace(
-//       new utils.Delay(4000, () => {
-//         anim.getClip('buy').stop()
-//         //anim.getClip('new_mask').play()
-//         anim.getClip('idle').play()
-//         // this.addComponentOrReplace(
-//         //   new utils.Delay(1000, () => {
-//         //     anim.getClip('new_mask').stop()
-//         //     this.idleAnim.play()
-
-//         //   })
-//         // )
-//       })
-//     )
-//   }
-// }
+        anim.getClip('Idle_POAP').play()
+      })
+    )
+  }
+}

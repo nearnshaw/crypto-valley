@@ -1,8 +1,14 @@
 import utils from '../node_modules/decentraland-ecs-utils/index'
+import { Dispenser } from './dispenser'
 import { updateCoinData } from './marketData'
 import { startParty } from './partyUpstairs'
 
-const STREAM_URL = 'https://video.dcl.guru/live/dclcoretv/index.m3u8'
+const STREAM_URL =
+  //'https://pili-live-hls-live.8btc.com/8btclive/20210113160033_6.m3u8'
+
+  //'https://video.dcl.guru/live/conventioncenter/index.m3u8'
+
+  'https://video.dcl.guru/live/dclcoretv/index.m3u8'
 
 //'https://video.dcl.guru/live/anorak/index.m3u8'
 //'https://video.dcl.guru/live/nftlondon/index.m3u8'
@@ -33,7 +39,23 @@ Input.instance.subscribe('BUTTON_DOWN', ActionButton.PRIMARY, false, (e) => {
   )
 })
 
+// POAP BOOTH
+
+let POAPBooth = new Dispenser(
+  {
+    position: new Vector3(46, 0, 6),
+    rotation: Quaternion.Euler(0, 180, 0),
+  },
+  'defichina'
+)
+
+// MAKE POAP BOOTH MULTIPLAYER
+
 export const sceneMessageBus = new MessageBus()
+
+sceneMessageBus.on('activatePoap', () => {
+  POAPBooth.activate()
+})
 
 let building = new Entity()
 building.addComponent(new GLTFShape('models/DCL_CC.glb'))
