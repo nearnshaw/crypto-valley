@@ -1,7 +1,9 @@
 import utils from '../node_modules/decentraland-ecs-utils/index'
-import { Dispenser } from './dispenser'
+//import { Dispenser } from './dispenser'
 import { updateCoinData } from './marketData'
 import { startParty } from './partyUpstairs'
+//import { sceneMessageBus } from './poapHandler'
+import { initiateUI } from './spotlightPointer'
 
 const STREAM_URL =
   //'https://pili-live-hls-live.8btc.com/8btclive/20210113160033_6.m3u8'
@@ -41,21 +43,19 @@ Input.instance.subscribe('BUTTON_DOWN', ActionButton.PRIMARY, false, (e) => {
 
 // POAP BOOTH
 
-let POAPBooth = new Dispenser(
-  {
-    position: new Vector3(46, 0, 6),
-    rotation: Quaternion.Euler(0, 180, 0),
-  },
-  'defichina'
-)
+// let POAPBooth = new Dispenser(
+//   {
+//     position: new Vector3(46, 0, 6),
+//     rotation: Quaternion.Euler(0, 180, 0),
+//   },
+//   'defichina'
+// )
 
-// MAKE POAP BOOTH MULTIPLAYER
+// // MAKE POAP BOOTH MULTIPLAYER
 
-export const sceneMessageBus = new MessageBus()
-
-sceneMessageBus.on('activatePoap', () => {
-  POAPBooth.activate()
-})
+// sceneMessageBus.on('activatePoap', () => {
+//   POAPBooth.activate()
+// })
 
 let building = new Entity()
 building.addComponent(new GLTFShape('models/DCL_CC.glb'))
@@ -186,3 +186,5 @@ engine.addEntity(largeScreen)
 updateCoinData()
 
 startParty()
+
+initiateUI()

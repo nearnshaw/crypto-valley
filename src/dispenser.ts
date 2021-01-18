@@ -1,7 +1,7 @@
 // import { openUI1 } from './ui'
 import utils from '../node_modules/decentraland-ecs-utils/index'
 import { handlePoap } from './poapHandler'
-import { sceneMessageBus } from './game'
+import { sceneMessageBus } from './spotlightPointer'
 
 export class Dispenser extends Entity {
   idleAnim = new AnimationState('Idle_POAP', { looping: true })
