@@ -118,7 +118,7 @@ export class StockData extends Entity {
   constructor(
     type: StockDataTypes,
     text: string,
-    transform: TranformConstructorArgs,
+    transform: TransformConstructorArgs,
     parent: Entity
   ) {
     super()

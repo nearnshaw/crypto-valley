@@ -2,7 +2,7 @@ export class PointerArrow extends Entity {
   defaultPosition = new Vector3()
   defaultRotation = new Quaternion()
   defaultScale = new Vector3()
-  constructor(defaultPosition: TranformConstructorArgs, parent?: Entity) {
+  constructor(defaultPosition: TransformConstructorArgs, parent?: Entity) {
     super()
 
     this.addComponent(new GLTFShape('models/Arrow.glb'))
