@@ -122,14 +122,6 @@ export async function initiateUI() {
       money.uncheck()
     })
 
-    let b1 = secretConfettiUI.addSwitch('Wave', 60, -200, () => {
-      b2.uncheck()
-    })
-
-    let b2 = secretConfettiUI.addSwitch('Fist Bump', 60, -220, () => {
-      b1.uncheck()
-    })
-
     Input.instance.subscribe(
       'BUTTON_DOWN',
       ActionButton.PRIMARY,
