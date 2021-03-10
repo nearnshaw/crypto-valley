@@ -4,11 +4,12 @@ import { updateCoinData } from './marketData'
 import { startParty } from './partyUpstairs'
 
 const STREAM_URL =
-  //'https://pili-live-hls-live.8btc.com/8btclive/20210113160033_6.m3u8'
+  'https://pili-live-hls-live.8btc.com/8btclive/20210201181902_6.m3u8'
+//'https://pili-live-hls-live.8btc.com/8btclive/20210113160033_6.m3u8'
 
-  //'https://video.dcl.guru/live/conventioncenter/index.m3u8'
+//'https://video.dcl.guru/live/conventioncenter/index.m3u8'
 
-  'https://video.dcl.guru/live/dclcoretv/index.m3u8'
+//'https://video.dcl.guru/live/dclcoretv/index.m3u8'
 
 //'https://video.dcl.guru/live/anorak/index.m3u8'
 //'https://video.dcl.guru/live/nftlondon/index.m3u8'
@@ -46,7 +47,7 @@ let POAPBooth = new Dispenser(
     position: new Vector3(46, 0, 6),
     rotation: Quaternion.Euler(0, 180, 0),
   },
-  'defichina'
+  'gyro'
 )
 
 // MAKE POAP BOOTH MULTIPLAYER

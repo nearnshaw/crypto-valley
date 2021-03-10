@@ -8,7 +8,7 @@ export class Dispenser extends Entity {
   buyAnim = new AnimationState('Action_POAP', { looping: false })
   buttonAnim = new AnimationState('Button_Action', { looping: false })
   eventName: string
-  constructor(transform: TranformConstructorArgs, eventName: string) {
+  constructor(transform: TransformConstructorArgs, eventName: string) {
     super()
     engine.addEntity(this)
 
