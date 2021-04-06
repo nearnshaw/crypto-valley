@@ -14,11 +14,12 @@
     "decentraland-ecs": "^6.6.4"
   },
   "dependencies": {
+    "@dcl/ecs-scene-utils": "^1.6.1",
     "@dcl/ui-scene-utils": "^1.7.1",
-    "decentraland-ecs-utils": "^1.1.4",
     "eth-connect": "^4.0.2"
   },
   "bundleDependencies": [
-    "@dcl/ui-scene-utils"
+    "@dcl/ui-scene-utils",
+    "@dcl/ecs-scene-utils"
   ]
 }

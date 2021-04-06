@@ -1,10 +1,12 @@
-import utils from '../node_modules/decentraland-ecs-utils/index'
+import * as utils from '@dcl/ecs-scene-utils'
+import { initiateVJUI } from './adminVJ'
 import { Dispenser } from './dispenser'
 import { updateCoinData } from './marketData'
 import { startParty } from './partyUpstairs'
 
-const STREAM_URL =
-  'https://pili-live-hls-live.8btc.com/8btclive/20210201181902_6.m3u8'
+const STREAM_URL = `https://d2lkrl9mesbz6t.cloudfront.net/out/v1/3fdb4f5e9b554e5c902a12aee30fbda6/index.m3u8`
+
+//'https://video.dcl.guru/live/conferencecenter1/index.m3u8'
 //'https://pili-live-hls-live.8btc.com/8btclive/20210113160033_6.m3u8'
 
 //'https://video.dcl.guru/live/conventioncenter/index.m3u8'
@@ -16,29 +18,31 @@ const STREAM_URL =
 
 //////// HACK TO SEE POSITIONS
 
-Input.instance.subscribe('BUTTON_DOWN', ActionButton.PRIMARY, false, (e) => {
-  //   log(`pos: `, Camera.instance.position)
-  //   log(`rot: `, Camera.instance.rotation)
-  log(
-    `{ position: new Vector3(`,
-    Camera.instance.position.x,
-    ',',
-    Camera.instance.position.y,
-    ',',
-    Camera.instance.position.z,
-    `),
-		rotation: new Quaternion(`,
-    Camera.instance.rotation.x,
-    ',',
-    Camera.instance.rotation.y,
-    ',',
-    Camera.instance.rotation.z,
-    ',',
-    Camera.instance.rotation.w,
-    `),
-	  },`
-  )
-})
+// Input.instance.subscribe('BUTTON_DOWN', ActionButton.PRIMARY, false, (e) => {
+//   //   log(`pos: `, Camera.instance.position)
+//   //   log(`rot: `, Camera.instance.rotation)
+//   log(
+//     `{ position: new Vector3(`,
+//     Camera.instance.position.x,
+//     ',',
+//     Camera.instance.position.y,
+//     ',',
+//     Camera.instance.position.z,
+//     `),
+// 		rotation: new Quaternion(`,
+//     Camera.instance.rotation.x,
+//     ',',
+//     Camera.instance.rotation.y,
+//     ',',
+//     Camera.instance.rotation.z,
+//     ',',
+//     Camera.instance.rotation.w,
+//     `),
+// 	  },`,
+//     Camera.instance.worldPosition,
+//     Camera.instance.feetPosition
+//   )
+// })
 
 // POAP BOOTH
 
@@ -47,10 +51,8 @@ let POAPBooth = new Dispenser(
     position: new Vector3(46, 0, 6),
     rotation: Quaternion.Euler(0, 180, 0),
   },
-  'gyro'
+  'wtfrnfts2'
 )
-
-// MAKE POAP BOOTH MULTIPLAYER
 
 export const sceneMessageBus = new MessageBus()
 
@@ -149,19 +151,16 @@ let VideoTriggerBox = new utils.TriggerBoxShape(
 VideoTrigger.addComponent(
   new utils.TriggerComponent(
     VideoTriggerBox, //shape
-    0, //layer
-    0, //triggeredByLayer
-    null, //onTriggerEnter
-    null, //onTriggerExit
-    () => {
-      v.playing = true
-      log('triggered!')
-    },
-    () => {
-      v.playing = false
-      //music.playing = false
-    },
-    false
+    {
+      onCameraEnter: () => {
+        v.playing = true
+        log('triggered!')
+      },
+      onCameraExit: () => {
+        v.playing = false
+        //music.playing = false
+      },
+    }
   )
 )
 engine.addEntity(VideoTrigger)
@@ -187,3 +186,5 @@ engine.addEntity(largeScreen)
 updateCoinData()
 
 startParty()
+
+initiateVJUI()

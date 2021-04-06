@@ -1,4 +1,5 @@
-import utils from '../node_modules/decentraland-ecs-utils/index'
+import { movePlayerTo } from '@decentraland/RestrictedActions'
+import * as utils from '@dcl/ecs-scene-utils'
 
 export function startParty() {
   let partySwitch: boolean = false
@@ -12,6 +13,7 @@ export function startParty() {
   )
   streamSource.addComponent(music)
   music.playing = false
+  music.volume = 0.2
   engine.addEntity(streamSource)
 
   const MusicTrigger = new Entity()
@@ -26,29 +28,26 @@ export function startParty() {
   MusicTrigger.addComponent(
     new utils.TriggerComponent(
       roofMusicrTriggerBox, //shape
-      0, //layer
-      0, //triggeredByLayer
-      null, //onTriggerEnter
-      null, //onTriggerExit
-      () => {
-        partySwitch = true
-        musicVideo.playing = true
-        music.playing = true
-        log('triggered!')
-      },
-      () => {
-        partySwitch = true
-        musicVideo.playing = false
-        music.playing = false
-        //music.playing = false
-      },
-      false
+      {
+        onCameraEnter: () => {
+          partySwitch = true
+          musicVideo.playing = true
+          music.playing = true
+          log('triggered!')
+        },
+        onCameraExit: () => {
+          partySwitch = true
+          musicVideo.playing = false
+          music.playing = false
+          //music.playing = false
+        },
+      }
     )
   )
   engine.addEntity(MusicTrigger)
 
   const musicVideo = new VideoTexture(
-    new VideoClip('https://theuniverse.club/live/consensys/index.m3u8')
+    new VideoClip('https://video.dcl.guru/live/visual/index.m3u8')
   )
   musicVideo.playing = false
 
@@ -155,3 +154,34 @@ export function startParty() {
 //   )
 
 //   engine.addEntity(ethLogo)
+
+export function addTeleporter() {
+  let teleport = new Entity()
+
+  teleport.addComponent(new GLTFShape('models/teleporter.glb'))
+
+  teleport.addComponent(
+    new Transform({
+      position: new Vector3(55, 0.2, 48),
+    })
+  )
+
+  teleport.addComponent(
+    new OnPointerDown(
+      () => {
+        movePlayerTo({ x: 40, y: 50, z: 40 })
+      },
+      { hoverText: 'GO UP' }
+    )
+  )
+
+  teleport.addComponent(
+    new utils.TriggerComponent(new utils.TriggerSphereShape(), {
+      onCameraEnter: () => {
+        movePlayerTo({ x: 40, y: 50, z: 40 })
+      },
+    })
+  )
+
+  engine.addEntity(teleport)
+}
