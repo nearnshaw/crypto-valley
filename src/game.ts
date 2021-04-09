@@ -51,7 +51,7 @@ let POAPBooth = new Dispenser(
     position: new Vector3(46, 0, 6),
     rotation: Quaternion.Euler(0, 180, 0),
   },
-  'wtfrnfts2'
+  'wtfrnfts5'
 )
 
 export const sceneMessageBus = new MessageBus()

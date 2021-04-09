@@ -3,7 +3,7 @@ import { getUserData, UserData } from '@decentraland/Identity'
 //import { isPreviewMode } from '@decentraland/EnvironmentAPI'
 
 import { movePlayerTo } from '@decentraland/RestrictedActions'
-import { addTeleporter } from './partyUpstairs'
+import { addLongDistanceTeleporter, addTeleporter } from './partyUpstairs'
 
 export let userData: UserData
 
@@ -300,7 +300,8 @@ export async function initiateVJUI() {
 
   sceneMessageBus.on('action', (e) => {
     if (e.action == 'teleport') {
-      addTeleporter()
+      // addTeleporter()
+      addLongDistanceTeleporter()
     }
   })
 

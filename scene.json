@@ -53,7 +53,17 @@
     "teleportPosition": ""
   },
 
-
+  "spawnPoints": [
+    {
+      "name": "spawn1",
+      "default": true,
+      "position": {
+        "x": [48,55],
+        "y": 3,
+        "z": [0,2]
+      }
+    }
+  ],
   "requiredPermissions": [
     "ALLOW_TO_MOVE_PLAYER_INSIDE_SCENE"
   ],

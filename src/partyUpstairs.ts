@@ -185,3 +185,35 @@ export function addTeleporter() {
 
   engine.addEntity(teleport)
 }
+
+export function addLongDistanceTeleporter() {
+  let teleport = new Entity()
+
+  teleport.addComponent(new GLTFShape('models/teleporter.glb'))
+
+  teleport.addComponent(
+    new Transform({
+      position: new Vector3(55, 0.2, 48),
+    })
+  )
+
+  teleport.addComponent(
+    new OnPointerDown(
+      () => {
+        //movePlayerTo({ x: 40, y: 50, z: 40 })
+        teleportTo('19,36')
+      },
+      { hoverText: 'Sugar Club' }
+    )
+  )
+
+  // teleport.addComponent(
+  //   new utils.TriggerComponent(new utils.TriggerSphereShape(), {
+  // 	onCameraEnter: () => {
+  // 	  movePlayerTo({ x: 40, y: 50, z: 40 })
+  // 	},
+  //   })
+  // )
+
+  engine.addEntity(teleport)
+}
